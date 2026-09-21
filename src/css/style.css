@@ -1,0 +1,56 @@
+body {
+    background-color: #eee;
+    margin: 0;
+    height: 100vh;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
+
+header {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin: 40px;
+    padding: 0;
+}
+
+/* header design */
+.top {
+    display: flex;
+    margin: 20px 40px 10px 40px;
+}
+
+.top h1 {
+    margin: 0;
+}
+
+.user {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+}
+
+.user img {
+    border-radius: 50%;
+    width: 64px;
+}
+
+nav {
+    display: flex;
+    background-color: #fff;
+    padding: 0px 50px;
+}
+
+nav ul {
+    display: flex;
+    gap: 40px;
+}
+
+/* footer design */
+footer {
+    text-align: center;
+}
