@@ -1,0 +1,95 @@
+ul {
+    list-style: none;
+}
+
+/* layout */
+.contain {
+    margin: 20px 200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "episode characters"
+        "episode reviews";
+    gap: 24px;
+}
+
+.episode {
+    grid-area: episode;
+}
+
+.characters {
+    grid-area: characters;
+}
+
+.reviews {
+    grid-area: reviews;
+}
+
+/* hero design */
+.manga-hero {
+    margin: 0 160px;
+    display: flex;
+}
+
+.manga-hero img {
+    width: 300px;
+    height: auto;
+}
+
+.info {
+    margin-left: 48px;
+}
+
+.info h2 {
+    font-size: 56px;
+}
+
+/* grid design */
+.episode {
+    border: 2px solid black;
+    padding: 24px;
+}
+
+.characters {
+    border: 2px solid black;
+    padding: 24px;
+}
+
+.reviews {
+    border: 2px solid black;
+    padding: 24px;
+}
+
+/* user design */
+.user-info img {
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+}
+
+.user-info {
+    display: flex;
+}
+
+.user-names p, .user-names time, .user-names data{
+    margin: 0;
+}
+
+.reviews li {
+    margin: 70px 0;
+}
+
+/* volume style */
+.volume {
+    display: table;
+    display: flex;
+    margin-top: 30px;
+}
+
+.volume-info {
+    vertical-align: middle;
+}
+
+.volume-list>li>ul>li {
+    margin-top: 10px;
+}
