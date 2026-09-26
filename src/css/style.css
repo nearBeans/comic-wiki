@@ -1,7 +1,24 @@
+:root {
+    --color-bg: #eee;
+    --color-nav: #fff;
+    --color-txt: #000;
+
+    --color-sidebar-border: #bbb;
+    --color-sidebar-tab-bg: #ddd;
+
+    --color-tag-bg: #494949;
+    --color-tag-txt: #fff; 
+    --color-srch-btn: #888;
+    --color-tag-srch-btn-bg: #fff;
+    --color-srch-btn-border: #4c4c4c;
+
+}
+
 body {
-    background-color: #eee;
+    background-color: var(--color-bg);
     margin: 0;
     height: 100vh;
+    color: var(--color-txt);
 }
 
 h1, h2, h3, h4 {
@@ -16,6 +33,11 @@ header {
 main {
     margin: 40px;
     padding: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 /* header design */
@@ -41,7 +63,7 @@ main {
 
 nav {
     display: flex;
-    background-color: #fff;
+    background-color: var(--color-nav);
     padding: 0px 48px;
 }
 

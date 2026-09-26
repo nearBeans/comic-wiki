@@ -35,7 +35,7 @@ main {
 
 form button {
     position: absolute;
-    color: #888;
+    color: var(--color-srch-btn);
     border: none;
     background: none;
     cursor: pointer;
@@ -49,7 +49,7 @@ form button {
 
 /* side-bar design */
 .side-bar {
-    border: 2px solid #bbb;
+    border: 2px solid var(--color-sidebar-border);
     margin: 20px;
 }
 
@@ -58,7 +58,7 @@ form button {
     margin: 0;
     padding: 0;
     list-style: none;
-    background-color: #ddd;
+    background-color: var(--color-sidebar-tab-bg);
     overflow: hidden;
 }
 
@@ -70,7 +70,7 @@ form button {
 }
 
 .side-bar ul li:first-child {
-    border-right: 2px solid #bbb;
+    border-right: 2px solid var(--color-sidebar-border);
 }
 
 .side-bar ol {

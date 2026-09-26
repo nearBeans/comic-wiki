@@ -43,8 +43,8 @@ ul {
     border-radius: 20px;
     display: inline;
     cursor: pointer;
-    background-color: #494949;
-    color: #fff;
+    background-color: var(--color-tag-bg);
+    color: var(--color-tag-txt);
 }
 
 .current {
@@ -55,7 +55,8 @@ ul {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #fff;
-    border: 1px solid #494949;
+    background-color: var(--color-tag-srch-btn-bg);
+    border: 2px solid var(--color-srch-btn-border);
+    color: var(--color-srch-btn);
     cursor: pointer ;
 }
