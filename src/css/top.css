@@ -9,13 +9,11 @@ main {
 }
 
 .side-bar {
-    width: 512px;
+    width: 480px;
 }
 
 /* main design */
 .main {
-    border: 2px solid black;
-    padding: 24px;
     margin: 20px;
 }
 
@@ -52,7 +50,6 @@ form button {
 /* side-bar design */
 .side-bar {
     border: 2px solid black;
-    padding: 24px;
     margin: 20px;
 }
 
@@ -70,7 +67,9 @@ form button {
     padding: 12px;
     text-align: center;
     cursor: pointer;
-    border-left: 1px solid black;
+}
+
+.side-bar ul li:first-child {
     border-right: 1px solid black;
 }
 
@@ -78,7 +77,7 @@ form button {
     list-style: none;
 }
 
-.rank-card {
+.rank-card > a {
     display: flex;
     margin-bottom: 24px;
 }
@@ -91,7 +90,7 @@ body {
     counter-reset: rank 0;
 }
 
-.rank-card::before {
+.rank-card > a::before {
     counter-increment: rank 1;
     content: counter(rank) "位　";
 }

@@ -21,7 +21,7 @@ main {
 /* header design */
 .top {
     display: flex;
-    margin: 20px 40px 10px 40px;
+    margin: 20px 40px 12px 40px;
 }
 
 .top h1 {
@@ -42,12 +42,12 @@ main {
 nav {
     display: flex;
     background-color: #fff;
-    padding: 0px 50px;
+    padding: 0px 48px;
 }
 
 nav ul {
     display: flex;
-    gap: 40px;
+    gap: 48px;
 }
 
 /* footer design */
