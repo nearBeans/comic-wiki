@@ -1,0 +1,19 @@
+/* card design*/
+.manga-card {
+    width: 148px;
+    flex-shrink: 0;
+}
+
+.manga-card img {
+    width: 148px;
+}
+
+.manga-card h3 {
+    margin-top: 10px;
+}
+
+.x-scroll {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+}
