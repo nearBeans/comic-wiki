@@ -94,3 +94,7 @@ body {
     counter-increment: rank 1;
     content: counter(rank) "位　";
 }
+
+.rank-active {
+    background-color: var(--color-sidebar-tab-active-bg);
+}

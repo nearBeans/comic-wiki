@@ -5,6 +5,7 @@
 
     --color-sidebar-border: #bbb;
     --color-sidebar-tab-bg: #ddd;
+    --color-sidebar-tab-active-bg: hsl(0, 0%, 100%);
 
     --color-tag-bg: #494949;
     --color-tag-txt: #fff; 
