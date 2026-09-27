@@ -3,6 +3,7 @@ export type Work = {
     title: string;
     author: string[];
     imageUrl: string;
+    clearImageUrl: string;
     rating: number;
     viewCount: number;
     updatedAt: Date;
@@ -20,6 +21,7 @@ export const works: Work[] = [
         title: "恋する小惑星",
         author: ["Quro"],
         imageUrl: "https://placehold.jp/100x142.png",
+        clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.8,
         viewCount: 32,
         updatedAt: new Date("2026-02-12"),
@@ -33,6 +35,7 @@ export const works: Work[] = [
         title: "君が死ぬまで恋をしたい",
         author: ["あおのなち"],
         imageUrl: "https://placehold.jp/100x142.png",
+        clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.2,
         viewCount: 25,
         updatedAt: new Date("2026-09-02"),
@@ -46,6 +49,7 @@ export const works: Work[] = [
         title: "日々は過ぎれど飯うまし",
         author: ["あっと", "Quro"],
         imageUrl: "https://placehold.jp/100x142.png",
+        clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 3.9,
         viewCount: 18,
         updatedAt: new Date("2026-01-25"),
@@ -59,6 +63,7 @@ export const works: Work[] = [
         title: "まちカドまぞく",
         author: ["伊藤いづも"],
         imageUrl: "https://placehold.jp/100x142.png",
+        clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.6,
         viewCount: 59,
         updatedAt: new Date("2025-11-30"),
@@ -72,6 +77,7 @@ export const works: Work[] = [
         title: "やがて君になる",
         author: ["仲谷鳰"],
         imageUrl: "https://placehold.jp/100x142.png",
+        clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.5,
         viewCount: 44,
         updatedAt: new Date("2026-06-09"),
@@ -85,6 +91,7 @@ export const works: Work[] = [
         title: "君のラブを見せてくれ！",
         author: ["リムコロ"],
         imageUrl: "https://placehold.jp/100x142.png",
+        clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.1,
         viewCount: 8,
         updatedAt: new Date("2025-10-22"),

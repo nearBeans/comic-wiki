@@ -24,7 +24,7 @@ switch (work) {
         const heroSection = document.createElement('section');
         heroSection.className = "manga-hero";
         const heroImage = document.createElement('img');
-        heroImage.src = work.imageUrl;
+        heroImage.src = work.clearImageUrl;
         heroImage.alt = `${work.title}の書影`;
         const mangaInfo = document.createElement('div');
         mangaInfo.className = "info";
