@@ -4,8 +4,9 @@ const container = document.querySelector("#cont-rcnt");
 const updateDateWorks = [...works];
 updateDateWorks.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 updateDateWorks.forEach(work => {
-    const card = document.createElement("div");
+    const card = document.createElement("a");
     card.className = "manga-card";
+    card.href = `model.html?id=${work.id}`;
     const title = document.createElement("h3");
     title.textContent = work.title;
     const image = document.createElement("img");
@@ -62,7 +63,7 @@ function renderRanking(array, type) {
         const listItem = document.createElement("li");
         listItem.className = "rank-card";
         const linkCont = document.createElement("a");
-        linkCont.href = "";
+        linkCont.href = `model.html?id=${work.id}`;
         const image = document.createElement("img");
         image.src = work.imageUrl;
         image.alt = `${work.title}の書影`;
