@@ -1,4 +1,4 @@
-import { works } from "./data.js";
+import { works, authors, type Work, type Author, type Ranking } from "./data.js"
 
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
@@ -21,8 +21,8 @@ switch (work) {
         httpErrorCont.appendChild(errorText);
         httpErrorCont.appendChild(linkToTop);
 
-        if (mainSection !== null) mainSection.appendChild(httpErrorCont);
-        if(pageTitle !== null && pageTitle !== undefined) pageTitle.textContent = "404 Not Found";
+        if (mainSection) mainSection.appendChild(httpErrorCont);
+        if(pageTitle) pageTitle.textContent = "404 Not Found";
         break;
 
     default:
@@ -40,10 +40,11 @@ switch (work) {
         mangaTitle.textContent = work.title;
 
         const authorNames = document.createElement('p');
-        for (const author of work.author) {
+        for (const authorId of work.authorId) {
             const authorLink = document.createElement('a');
-            authorLink.href = "";
-            authorLink.textContent = author;
+            authorLink.href = `author.html?id=${authorId}`;
+            const foundAuthorsId = authors.find(a => a.authorId === authorId);
+            if (foundAuthorsId) authorLink.textContent = foundAuthorsId.authorName;
             authorNames.appendChild(authorLink);
         }
 
@@ -81,6 +82,6 @@ switch (work) {
         heroSection.append(heroImage, mangaInfo);
         mainSection?.appendChild(heroSection);
 
-        if(pageTitle !== null && pageTitle !== undefined) pageTitle.textContent = `${work.title} - Service Name`
+        if(pageTitle) pageTitle.textContent = `${work.title} - Service Name`
         break;
 }

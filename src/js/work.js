@@ -1,4 +1,4 @@
-import { works } from "./data.js";
+import { works, authors } from "./data.js";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = works.find(work => work.id === workId);
@@ -15,9 +15,9 @@ switch (work) {
         linkToTop.textContent = "←トップに戻る";
         httpErrorCont.appendChild(errorText);
         httpErrorCont.appendChild(linkToTop);
-        if (mainSection !== null)
+        if (mainSection)
             mainSection.appendChild(httpErrorCont);
-        if (pageTitle !== null && pageTitle !== undefined)
+        if (pageTitle)
             pageTitle.textContent = "404 Not Found";
         break;
     default:
@@ -31,10 +31,12 @@ switch (work) {
         const mangaTitle = document.createElement('h2');
         mangaTitle.textContent = work.title;
         const authorNames = document.createElement('p');
-        for (const author of work.author) {
+        for (const authorId of work.authorId) {
             const authorLink = document.createElement('a');
-            authorLink.href = "";
-            authorLink.textContent = author;
+            authorLink.href = `author.html?id=${authorId}`;
+            const foundAuthorsId = authors.find(a => a.authorId === authorId);
+            if (foundAuthorsId)
+                authorLink.textContent = foundAuthorsId.authorName;
             authorNames.appendChild(authorLink);
         }
         const reviewScore = document.createElement('data');
@@ -62,7 +64,7 @@ switch (work) {
         mangaInfo.append(mangaTitle, authorNames, reviewScore, viewCount, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
         mainSection?.appendChild(heroSection);
-        if (pageTitle !== null && pageTitle !== undefined)
+        if (pageTitle)
             pageTitle.textContent = `${work.title} - Service Name`;
         break;
 }

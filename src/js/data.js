@@ -2,7 +2,7 @@ export const works = [
     {
         id: 1,
         title: "恋する小惑星",
-        author: ["Quro"],
+        authorId: [5],
         imageUrl: "https://placehold.jp/100x142.png",
         clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.8,
@@ -16,7 +16,7 @@ export const works = [
     {
         id: 2,
         title: "君が死ぬまで恋をしたい",
-        author: ["あおのなち"],
+        authorId: [1],
         imageUrl: "https://placehold.jp/100x142.png",
         clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.2,
@@ -30,7 +30,7 @@ export const works = [
     {
         id: 3,
         title: "日々は過ぎれど飯うまし",
-        author: ["あっと", "Quro"],
+        authorId: [2, 5],
         imageUrl: "https://placehold.jp/100x142.png",
         clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 3.9,
@@ -44,7 +44,7 @@ export const works = [
     {
         id: 4,
         title: "まちカドまぞく",
-        author: ["伊藤いづも"],
+        authorId: [6],
         imageUrl: "https://placehold.jp/100x142.png",
         clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.6,
@@ -58,7 +58,7 @@ export const works = [
     {
         id: 5,
         title: "やがて君になる",
-        author: ["仲谷鳰"],
+        authorId: [4],
         imageUrl: "https://placehold.jp/100x142.png",
         clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.5,
@@ -72,7 +72,7 @@ export const works = [
     {
         id: 6,
         title: "君のラブを見せてくれ！",
-        author: ["リムコロ"],
+        authorId: [3],
         imageUrl: "https://placehold.jp/100x142.png",
         clearImageUrl: "https://placehold.jp/500x710.png",
         rating: 4.1,
@@ -82,6 +82,38 @@ export const works = [
         magazines: ["コミックNewtype"],
         imprint: "角川コミックス・エース",
         description: "2025年まで連載されていた、リムコロによる漫画。天才漫画家の高校生、四条恋路は本物の恋を理解することができずスランプに陥っていた。一組の男女をきっかけに、恋の探求が始まる。"
+    }
+];
+export const authors = [
+    {
+        authorId: 1,
+        authorName: "あおのなち",
+        hasWorkId: [2]
+    },
+    {
+        authorId: 2,
+        authorName: "あっと",
+        hasWorkId: [3]
+    },
+    {
+        authorId: 3,
+        authorName: "リムコロ",
+        hasWorkId: [6]
+    },
+    {
+        authorId: 4,
+        authorName: "仲谷鳰",
+        hasWorkId: [5]
+    },
+    {
+        authorId: 5,
+        authorName: "Quro",
+        hasWorkId: [1, 3]
+    },
+    {
+        authorId: 6,
+        authorName: "伊藤いづも",
+        hasWorkId: [4]
     }
 ];
 //# sourceMappingURL=data.js.map

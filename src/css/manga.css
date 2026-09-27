@@ -44,6 +44,10 @@ ul {
     font-size: 56px;
 }
 
+.info > p > a:not(:last-child)::after {
+    content: ", ";
+}
+
 /* grid design */
 .episode {
     border: 2px solid black;

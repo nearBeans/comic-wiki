@@ -1,4 +1,4 @@
-import { works } from "./data.js";
+import { works, authors } from "./data.js";
 // トップページのリセントカードの描画
 const container = document.querySelector("#cont-rcnt");
 const updateDateWorks = [...works];
@@ -71,8 +71,11 @@ function renderRanking(array, type) {
         info.className = "manga-info";
         const title = document.createElement("h3");
         title.textContent = work.title;
-        const authors = document.createElement("p");
-        authors.textContent = work.author.join(", ");
+        const authorNames = document.createElement("p");
+        const foundAuthors = authors.filter(author => work.authorId.includes(author.authorId));
+        foundAuthors.forEach(array => {
+            authorNames.textContent += `${array.authorName}　`;
+        });
         const data = document.createElement("data");
         switch (type) {
             case "rating":
@@ -85,7 +88,7 @@ function renderRanking(array, type) {
                 break;
         }
         info.appendChild(title);
-        info.appendChild(authors);
+        info.appendChild(authorNames);
         info.appendChild(data);
         linkCont.appendChild(image);
         linkCont.appendChild(info);
