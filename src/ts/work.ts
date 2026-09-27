@@ -17,10 +17,10 @@ switch (work) {
         linkToTop.href = "index.html";
         linkToTop.textContent = "←トップに戻る"
         
-        errorText.appendChild(httpErrorCont);
-        linkToTop.appendChild(httpErrorCont);
+        httpErrorCont.appendChild(errorText);
+        httpErrorCont.appendChild(linkToTop);
 
-        if (mainSection !== null) httpErrorCont.appendChild(mainSection);
+        if (mainSection !== null) mainSection.appendChild(httpErrorCont);
         break;
 
     default:
