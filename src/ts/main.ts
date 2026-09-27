@@ -38,7 +38,7 @@ const works: Work[] = [
         imageUrl: "https://placehold.jp/100x142.png",
         rating: 3.9,
         viewCount: 18,
-        updatedAt: new Date("2026-00-25")
+        updatedAt: new Date("2026-01-25")
     },
     {
         id: 4,
