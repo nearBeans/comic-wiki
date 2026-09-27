@@ -77,3 +77,10 @@ nav ul {
 footer {
     text-align: center;
 }
+
+.http404 {
+    text-align: center;
+}
+.http404 a {
+    text-decoration: underline;
+}
