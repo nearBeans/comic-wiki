@@ -4,6 +4,7 @@ const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = works.find(work => work.id === workId);
 const mainSection = document.querySelector('main');
+const pageTitle = document.querySelector('title');
 
 switch (work) {
     case undefined:
@@ -21,6 +22,7 @@ switch (work) {
         httpErrorCont.appendChild(linkToTop);
 
         if (mainSection !== null) mainSection.appendChild(httpErrorCont);
+        if(pageTitle !== null && pageTitle !== undefined) pageTitle.textContent = "404 Not Found";
         break;
 
     default:
@@ -78,5 +80,7 @@ switch (work) {
         mangaInfo.append(mangaTitle, authorNames, reviewScore, viewCount, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
         mainSection?.appendChild(heroSection);
+
+        if(pageTitle !== null && pageTitle !== undefined) pageTitle.textContent = `${work.title} - Service Name`
         break;
 }

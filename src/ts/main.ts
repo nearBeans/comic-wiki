@@ -6,7 +6,7 @@ updateDateWorks.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.upda
 updateDateWorks.forEach(work => {
     const card = document.createElement("a");
     card.className = "manga-card";
-    card.href = `model.html?id=${work.id}`
+    card.href = `work.html?id=${work.id}`
 
     const title = document.createElement("h3");
     title.textContent = work.title;
@@ -78,7 +78,7 @@ function renderRanking(array: Work[], type: Ranking): void {
         listItem.className = "rank-card";
 
         const linkCont = document.createElement("a");
-        linkCont.href = `model.html?id=${work.id}`;
+        linkCont.href = `work.html?id=${work.id}`;
 
         const image = document.createElement("img");
         image.src = work.imageUrl;
