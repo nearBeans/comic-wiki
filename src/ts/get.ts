@@ -1,4 +1,4 @@
-import { works, authors, episodes, type Work, type Author, type Chapter, type Volume, type WorksChapters, type Ranking } from "./data.js"
+import { works, authors, episodes, type Work, type Author, type WorksChapters } from "./data.js"
 
 export function getWorkById(id: number): Work | undefined {
     return works.find(work => work.id === id);
