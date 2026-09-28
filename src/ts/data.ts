@@ -162,7 +162,7 @@ export const authors: Author[] = [
     }
 ]
 
-export const chapters: WorksChapters[] = [
+export const episodes: WorksChapters[] = [
     {
         workId: 1,
 

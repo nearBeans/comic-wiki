@@ -1,9 +1,9 @@
-import { works, authors } from "./data.js"
+import { getAuthorById, getWorkById } from "./get.js";
 
 const param = new URLSearchParams(window.location.search);
 const authorId = Number(param.get('id'));
 const mainSection = document.querySelector('main');
-const foundAuthor = authors.find(a => a.authorId === authorId);
+const foundAuthor = getAuthorById(authorId);
 const pageTitle = document.querySelector('title');
 
 switch (foundAuthor) {
@@ -32,7 +32,7 @@ switch (foundAuthor) {
         const worksGrid = document.createElement('div');
         worksGrid.className = "works-grid";
         foundAuthor?.hasWorkId.forEach(workId => {
-            const foundWork = works.find(work => work.id === workId);
+            const foundWork = getWorkById(workId);
             switch (foundWork) {
                 case undefined:
                     worksGrid.textContent = "表示する作品がありません。"

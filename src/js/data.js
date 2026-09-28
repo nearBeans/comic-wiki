@@ -116,7 +116,7 @@ export const authors = [
         hasWorkId: [4]
     }
 ];
-export const chapters = [
+export const episodes = [
     {
         workId: 1,
         chapters: [

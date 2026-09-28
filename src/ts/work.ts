@@ -1,8 +1,8 @@
-import { works, authors, chapters } from "./data.js"
+import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
 
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
-const work = works.find(work => work.id === workId);
+const work = getWorkById(workId);
 const mainSection = document.querySelector('main');
 const pageTitle = document.querySelector('title');
 
@@ -44,8 +44,8 @@ switch (work) {
         for (const authorId of work.authorId) {
             const authorLink = document.createElement('a');
             authorLink.href = `author.html?id=${authorId}`;
-            const foundAuthorsId = authors.find(a => a.authorId === authorId);
-            if (foundAuthorsId) authorLink.textContent = foundAuthorsId.authorName;
+            const foundAuthorId = getAuthorById(authorId);
+            if (foundAuthorId) authorLink.textContent = foundAuthorId.authorName;
             authorNames.appendChild(authorLink);
         }
 
@@ -91,7 +91,7 @@ switch (work) {
         chapterSection.className = "episode";
         const headingChapterSection = document.createElement('h3');
 
-        const workChaptersAndVolumes = chapters.find(obj => obj.workId === workId);
+        const workChaptersAndVolumes = getChaptersByWorkId(workId);
         switch (workChaptersAndVolumes) {
             case undefined:
                 headingChapterSection.textContent = "紐付けられた作品がありません。"
