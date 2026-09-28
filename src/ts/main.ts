@@ -1,4 +1,4 @@
-import { works, authors, type Work, type Author, type Ranking } from "./data.js"
+import { works, authors, type Work, type Ranking } from "./data.js"
 // トップページのリセントカードの描画
 const container = document.querySelector("#cont-rcnt");
 const updateDateWorks = [...works];

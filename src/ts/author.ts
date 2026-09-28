@@ -1,4 +1,4 @@
-import { works, authors, type Work, type Author, type Ranking } from "./data.js"
+import { works, authors } from "./data.js"
 
 const param = new URLSearchParams(window.location.search);
 const authorId = Number(param.get('id'));

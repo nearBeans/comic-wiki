@@ -85,15 +85,26 @@ ul {
 
 /* volume style */
 .volume {
-    display: table;
     display: flex;
     margin-top: 30px;
 }
 
 .volume-info {
-    vertical-align: middle;
+    margin-left: 20px;
 }
 
 .volume-list>li>ul>li {
     margin-top: 10px;
+}
+
+.volume-list>li>ul>li>span:first-child {
+    margin-right: 10px;
+}
+
+.leftovers::before {
+    content: "未収録";
+}
+
+.leftovers {
+    margin-top: 30px;
 }

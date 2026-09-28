@@ -1,4 +1,4 @@
-import { works, authors } from "./data.js";
+import { works, authors, chapters } from "./data.js";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = works.find(work => work.id === workId);
@@ -21,6 +21,7 @@ switch (work) {
             pageTitle.textContent = "404 Not Found";
         break;
     default:
+        // ヒーローセクションの描画
         const heroSection = document.createElement('section');
         heroSection.className = "manga-hero";
         const heroImage = document.createElement('img');
@@ -63,7 +64,95 @@ switch (work) {
         descriptionMsg.textContent = work.description;
         mangaInfo.append(mangaTitle, authorNames, reviewScore, viewCount, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
+        // 下部包含セクションの作成
+        const containSection = document.createElement('section');
+        containSection.className = "contain";
+        // チャプターセクションの描画
+        const chapterSection = document.createElement('section');
+        chapterSection.className = "episode";
+        const headingChapterSection = document.createElement('h3');
+        const workChaptersAndVolumes = chapters.find(obj => obj.workId === workId);
+        switch (workChaptersAndVolumes) {
+            case undefined:
+                headingChapterSection.textContent = "紐付けられた作品がありません。";
+                chapterSection.appendChild(headingChapterSection);
+                break;
+            default:
+                headingChapterSection.textContent = "エピソード";
+                chapterSection.appendChild(headingChapterSection);
+                const volumeList = document.createElement('ul');
+                volumeList.className = "volume-list";
+                workChaptersAndVolumes.volumes.forEach(volume => {
+                    const volumeAndChaptersContainer = document.createElement('li');
+                    // 巻の表示
+                    const volumeContainer = document.createElement('div');
+                    volumeContainer.className = "volume";
+                    const volumeImage = document.createElement('img');
+                    volumeImage.src = volume.volumeImageUrl;
+                    volumeImage.alt = `${volume.volumeIndex} の書影`;
+                    const volumeInfoContainer = document.createElement('div');
+                    volumeInfoContainer.className = "volume-info";
+                    const headVolumeIndex = document.createElement('h4');
+                    headVolumeIndex.textContent = volume.volumeIndex;
+                    const year = volume.publishedAt.getFullYear();
+                    const month = volume.publishedAt.getMonth() + 1;
+                    const date = volume.publishedAt.getDate();
+                    const publishedDate = document.createElement('time');
+                    publishedDate.textContent = `${year}年${month}月${date}日`;
+                    const dateString = [
+                        volume.publishedAt.getFullYear(),
+                        String(volume.publishedAt.getMonth() + 1).padStart(2, "0"),
+                        String(volume.publishedAt.getDate()).padStart(2, "0"),
+                    ].join("-");
+                    publishedDate.setAttribute('datetime', dateString);
+                    volumeInfoContainer.appendChild(headVolumeIndex);
+                    volumeInfoContainer.appendChild(publishedDate);
+                    volumeContainer.appendChild(volumeImage);
+                    volumeContainer.appendChild(volumeInfoContainer);
+                    // 収録されている話を描画
+                    const chapterList = document.createElement('ul');
+                    volume.chapterIds.forEach(hasChapterId => {
+                        const foundChapter = workChaptersAndVolumes.chapters.find(chapter => chapter.chapterId === hasChapterId);
+                        if (foundChapter) {
+                            const chapterListItem = document.createElement('li');
+                            const chapterIndex = document.createElement('span');
+                            chapterIndex.textContent = foundChapter.chapterIndex;
+                            const chapterTitle = document.createElement('span');
+                            chapterTitle.textContent = foundChapter.chapterTitle;
+                            chapterListItem.appendChild(chapterIndex);
+                            chapterListItem.appendChild(chapterTitle);
+                            chapterList.appendChild(chapterListItem);
+                        }
+                    });
+                    volumeAndChaptersContainer.appendChild(volumeContainer);
+                    volumeAndChaptersContainer.appendChild(chapterList);
+                    volumeList.appendChild(volumeAndChaptersContainer);
+                });
+                const unpublishedChapters = workChaptersAndVolumes.chapters.filter(chapter => !workChaptersAndVolumes.volumes.some(volume => volume.chapterIds.includes(chapter.chapterId)));
+                const chaptersContainer = document.createElement('li');
+                chaptersContainer.className = "leftovers";
+                const unpublishedChapterList = document.createElement('ul');
+                unpublishedChapters.forEach(chapter => {
+                    if (chapter) {
+                        const chapterListItem = document.createElement('li');
+                        const chapterIndex = document.createElement('span');
+                        chapterIndex.textContent = chapter.chapterIndex;
+                        const chapterTitle = document.createElement('span');
+                        chapterTitle.textContent = chapter.chapterTitle;
+                        chapterListItem.appendChild(chapterIndex);
+                        chapterListItem.appendChild(chapterTitle);
+                        unpublishedChapterList.appendChild(chapterListItem);
+                    }
+                });
+                chaptersContainer.appendChild(unpublishedChapterList);
+                volumeList.appendChild(chaptersContainer);
+                chapterSection.appendChild(volumeList);
+                break;
+        }
+        containSection.appendChild(chapterSection);
+        // mainに描画
         mainSection?.appendChild(heroSection);
+        mainSection?.appendChild(containSection);
         if (pageTitle)
             pageTitle.textContent = `${work.title} - Service Name`;
         break;
