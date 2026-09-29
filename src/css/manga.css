@@ -17,7 +17,7 @@ ul {
     grid-area: episode;
 }
 
-.characters {
+.details {
     grid-area: characters;
 }
 

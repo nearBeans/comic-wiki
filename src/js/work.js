@@ -1,4 +1,5 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
+import { workSections } from "./data.js";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
@@ -21,6 +22,7 @@ switch (work) {
             pageTitle.textContent = "404 Not Found";
         break;
     default:
+        // #region hero-section
         // ヒーローセクションの描画
         const heroSection = document.createElement('section');
         heroSection.className = "manga-hero";
@@ -64,9 +66,11 @@ switch (work) {
         descriptionMsg.textContent = work.description;
         mangaInfo.append(mangaTitle, authorNames, reviewScore, viewCount, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
+        // #endregion
         // 下部包含セクションの作成
         const containSection = document.createElement('section');
         containSection.className = "contain";
+        // #region chapter-section
         // チャプターセクションの描画
         const chapterSection = document.createElement('section');
         chapterSection.className = "episode";
@@ -150,9 +154,67 @@ switch (work) {
                 break;
         }
         containSection.appendChild(chapterSection);
+        // #endregion
+        // #region details-section
+        const detailsSection = document.createElement('section');
+        detailsSection.className = "details";
+        const foundDetailsWork = workSections.find(workItem => workItem.workId === workId);
+        foundDetailsWork?.sections.forEach(detailSection => {
+            const eachDetailSection = document.createElement('section');
+            const headingDetailSection = document.createElement('h3');
+            headingDetailSection.textContent = detailSection.headingName;
+            eachDetailSection.appendChild(headingDetailSection);
+            switch (detailSection.type) {
+                case "string":
+                    const detailText = document.createElement('p');
+                    detailText.textContent = detailSection.mainText;
+                    eachDetailSection.appendChild(detailText);
+                    break;
+                case "data":
+                    const dataContainer = document.createElement('dl');
+                    detailSection.items.forEach(pair => {
+                        const dataKey = document.createElement('dt');
+                        dataKey.textContent = pair.key;
+                        const dataValue = document.createElement('dd');
+                        dataValue.textContent = pair.value;
+                        dataContainer.appendChild(dataKey);
+                        dataContainer.appendChild(dataValue);
+                    });
+                    eachDetailSection.appendChild(dataContainer);
+                    break;
+                case "table":
+                    const tableContainer = document.createElement('table');
+                    // table header
+                    const tableHeadContainer = document.createElement('thead');
+                    const tableHeadRow = document.createElement('tr');
+                    detailSection.headers.forEach(headItem => {
+                        const tableHeadCell = document.createElement('th');
+                        tableHeadCell.textContent = headItem;
+                        tableHeadRow.appendChild(tableHeadCell);
+                    });
+                    tableHeadContainer.appendChild(tableHeadRow);
+                    // table body
+                    const tableBodyContainer = document.createElement('tbody');
+                    detailSection.rows.forEach(row => {
+                        const tableBodyRow = document.createElement('tr');
+                        row.forEach(rowItem => {
+                            const tableBodyCell = document.createElement('th');
+                            tableBodyCell.textContent = rowItem;
+                        });
+                        tableBodyRow.appendChild(tableBodyRow);
+                    });
+                    tableContainer.appendChild(tableHeadContainer);
+                    tableContainer.appendChild(tableBodyContainer);
+                    eachDetailSection.appendChild(tableContainer);
+                    break;
+            }
+            detailsSection.appendChild(eachDetailSection);
+        });
+        // #endregion
         // mainに描画
         mainSection?.appendChild(heroSection);
         mainSection?.appendChild(containSection);
+        mainSection?.appendChild(detailsSection);
         if (pageTitle)
             pageTitle.textContent = `${work.title} - Service Name`;
         break;

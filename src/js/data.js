@@ -494,4 +494,154 @@ export const episodes = [
         ]
     }
 ];
+export const workSections = [
+    {
+        workId: 1, // 恋する小惑星
+        sections: [
+            {
+                type: "data",
+                headingName: "作品データ",
+                items: [
+                    { key: "形式", value: "4コマ漫画" },
+                    { key: "連載期間", value: "〜2024年8月" },
+                    { key: "テーマ", value: "地学・天文" }
+                ]
+            },
+            {
+                type: "table",
+                headingName: "キャラクター",
+                headers: ["名前", "所属", "備考"],
+                rows: [
+                    ["木ノ幡みら", "地学部", "主人公"],
+                    ["真中あお", "地学部", ""]
+                ]
+            },
+            {
+                type: "string",
+                headingName: "用語",
+                mainText: "ジオジョ: 地学部に所属する女子高生を指す作中の呼び方。"
+            }
+        ]
+    },
+    {
+        workId: 2, // 君が死ぬまで恋をしたい
+        sections: [
+            {
+                type: "data",
+                headingName: "作品データ",
+                items: [
+                    { key: "連載開始", value: "2018年" },
+                    { key: "主な掲載", value: "コミック百合姫 / 百合姫＠ピクシブ" }
+                ]
+            },
+            {
+                type: "table",
+                headingName: "登場人物",
+                headers: ["名前", "年齢", "備考"],
+                rows: [
+                    ["シーナ", "14歳", "主人公。学校で育てられた兵器"],
+                    ["ミミ", "", "シーナが出会う少女"]
+                ]
+            },
+            {
+                type: "string",
+                headingName: "舞台",
+                mainText: "身寄りのない子どもを戦争用の兵器として育てる、学校と呼ばれる場所。"
+            }
+        ]
+    },
+    {
+        workId: 3, // 日々は過ぎれど飯うまし
+        sections: [
+            {
+                type: "data",
+                headingName: "メディア展開",
+                items: [
+                    { key: "アニメ", value: "2025年4月放送" },
+                    { key: "コミカライズ", value: "アライブ++(KADOKAWA)" }
+                ]
+            },
+            {
+                type: "table",
+                headingName: "キャラクター",
+                headers: ["名前", "所属", "備考"],
+                rows: [
+                    ["河合まこ", "サークル", "食べることが好き。主人公"]
+                ]
+            }
+        ]
+    },
+    {
+        workId: 4, // まちカドまぞく
+        sections: [
+            {
+                type: "data",
+                headingName: "作品データ",
+                items: [
+                    { key: "形式", value: "4コマ漫画" },
+                    { key: "連載開始", value: "2014年" },
+                    { key: "ジャンル", value: "日常・ファンタジー" }
+                ]
+            },
+            {
+                type: "table",
+                headingName: "キャラクター",
+                headers: ["名前", "種族・立場", "備考"],
+                rows: [
+                    ["シャミ子", "闇の一族の末裔", "主人公"],
+                    ["千代田桃", "光の魔法少女", ""],
+                    ["陽夏木ミカン", "光の魔法少女", ""]
+                ]
+            },
+            {
+                type: "string",
+                headingName: "制作メモ",
+                mainText: "作者は伊藤いづも。隠された真実が少しずつ描かれていく構成。"
+            }
+        ]
+    },
+    {
+        workId: 5, // やがて君になる
+        sections: [
+            {
+                type: "data",
+                headingName: "作品データ",
+                items: [
+                    { key: "ジャンル", value: "百合・恋愛" },
+                    { key: "掲載誌", value: "月刊コミック電撃大王" }
+                ]
+            },
+            {
+                type: "table",
+                headingName: "キャラクター",
+                headers: ["名前", "立場", "備考"],
+                rows: [
+                    ["小糸侑", "誰のことも特別に思えない少女", "主人公"],
+                    ["七海燈子", "自分のことが嫌いな少女", ""]
+                ]
+            }
+        ]
+    },
+    {
+        workId: 6, // 君のラブを見せてくれ！
+        sections: [
+            {
+                type: "data",
+                headingName: "作品データ",
+                items: [
+                    { key: "連載", value: "〜2025年" },
+                    { key: "主な掲載", value: "コミックNewtype" }
+                ]
+            },
+            {
+                type: "table",
+                headingName: "キャラクター",
+                headers: ["名前", "職業", "備考"],
+                rows: [
+                    ["四条恋路", "高校生・漫画家", "天才だがスランプ中"]
+                ]
+            }
+        ]
+    }
+];
 //# sourceMappingURL=data.js.map
