@@ -199,7 +199,7 @@ switch (work) {
                     detailSection.rows.forEach(row => {
                         const tableBodyRow = document.createElement('tr');
                         row.forEach(rowItem => {
-                            const tableBodyCell = document.createElement('th');
+                            const tableBodyCell = document.createElement('td');
                             tableBodyCell.textContent = rowItem;
                             tableBodyRow.appendChild(tableBodyCell);
                         });
