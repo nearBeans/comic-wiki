@@ -69,7 +69,13 @@ ul {
 }
 
 .detail table {
+    margin: 0 auto;
     width: 90%;
+}
+
+.detail th, td {
+    text-align: center;
+    vertical-align: middle;
 }
 
 /* user design */
