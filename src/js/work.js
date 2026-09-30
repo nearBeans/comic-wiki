@@ -161,6 +161,7 @@ switch (work) {
         const foundDetailsWork = workSections.find(workItem => workItem.workId === workId);
         foundDetailsWork?.sections.forEach(detailSection => {
             const eachDetailSection = document.createElement('section');
+            eachDetailSection.className = "detail";
             const headingDetailSection = document.createElement('h3');
             headingDetailSection.textContent = detailSection.headingName;
             eachDetailSection.appendChild(headingDetailSection);
@@ -200,8 +201,9 @@ switch (work) {
                         row.forEach(rowItem => {
                             const tableBodyCell = document.createElement('th');
                             tableBodyCell.textContent = rowItem;
+                            tableBodyRow.appendChild(tableBodyCell);
                         });
-                        tableBodyRow.appendChild(tableBodyRow);
+                        tableBodyContainer.appendChild(tableBodyRow);
                     });
                     tableContainer.appendChild(tableHeadContainer);
                     tableContainer.appendChild(tableBodyContainer);
@@ -210,11 +212,11 @@ switch (work) {
             }
             detailsSection.appendChild(eachDetailSection);
         });
+        containSection.appendChild(detailsSection);
         // #endregion
         // mainに描画
         mainSection?.appendChild(heroSection);
         mainSection?.appendChild(containSection);
-        mainSection?.appendChild(detailsSection);
         if (pageTitle)
             pageTitle.textContent = `${work.title} - Service Name`;
         break;

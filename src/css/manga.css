@@ -8,7 +8,7 @@ ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-        "episode characters"
+        "episode details"
         "episode reviews";
     gap: 24px;
 }
@@ -18,7 +18,7 @@ ul {
 }
 
 .details {
-    grid-area: characters;
+    grid-area: details;
 }
 
 .reviews {
@@ -54,7 +54,7 @@ ul {
     padding: 24px;
 }
 
-.characters {
+.details {
     border: 2px solid black;
     padding: 24px;
 }
@@ -62,6 +62,18 @@ ul {
 .reviews {
     border: 2px solid black;
     padding: 24px;
+}
+
+.detail {
+    margin-bottom: 40px;
+}
+
+.detail tbody th {
+    font-weight: lighter;
+}
+
+.detail table {
+    width: 90%;
 }
 
 /* user design */
