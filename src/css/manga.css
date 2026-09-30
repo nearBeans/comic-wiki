@@ -73,7 +73,7 @@ ul {
     width: 90%;
 }
 
-.detail th, td {
+.detail th, .detail td {
     text-align: center;
     vertical-align: middle;
 }
