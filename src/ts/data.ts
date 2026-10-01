@@ -59,7 +59,7 @@ export const works: Work[] = [
     },
     {
         id: 2,
-        title: "君が死ぬまで恋をしたい",
+        title: "きみが死ぬまで恋をしたい",
         authorId: [1],
         imageUrl: "https://placehold.jp/100x142.png",
         clearImageUrl: "https://placehold.jp/500x710.png",
@@ -614,7 +614,7 @@ export const workSections: WorkSections[] = [
         ]
     },
     {
-        workId: 2, // 君が死ぬまで恋をしたい
+        workId: 2, // きみが死ぬまで恋をしたい
         sections: [
             {
                 type: "data",
