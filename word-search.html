@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP PAGE</title>
+    <link rel="stylesheet" href="src/css/sanitize.css">
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/search.css">
+    <link rel="stylesheet" href="src/css/card.css">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+</head>
+
+<body>
+    <header>
+        <div class="top">
+            <h1><a href="index.html">Service Name</a></h1>
+            <div class="user">
+                <img src="https://placehold.jp/128x128.png" alt="Usericon">
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="search.html">作品を探す</a></li>
+                <li><a href="">作品を編集する</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="main">
+            <section class="word-search">
+                <h2>語句から探す</h2>
+                <form>
+                    <label for="search-box">作品を検索</label>
+                    <button type="submit"><span class="material-symbols-outlined">search</span></button>
+                    <input type="search" name="q" id="search-box" placeholder="作品タイトルか作者を入力" maxlength="80">
+                </form>
+            </section>
+            <section class="results">
+            </section>
+        </section>
+    </main>
+    <footer><small>&copy;comic wiki 2026</small></footer>
+    <script type="module" src="src/js/search.js"></script>
+</body>
+
+</html>
