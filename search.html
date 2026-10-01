@@ -45,14 +45,12 @@
                 <h3>現在選択中のタグ</h3>
                 <div class="current">
                     <button type="submit"><span class="material-symbols-outlined">search</span></button>
-                    <ul class="tags">
-                        <li>恋愛</li>
-                        <li>ご飯</li>
-                        <li>GL</li>
+                    <ul class="tags" id="current-tags">
+
                     </ul>
                 </div>
                 <h3>タグ一覧から選択</h3>
-                <ul class="tag-list tags">
+                <ul class="tags" id="tag-list">
                     <li>ファンタジー</li>
                     <li>バトル</li>
                     <li>転生</li>
@@ -154,6 +152,7 @@
         </section>
     </main>
     <footer><small>&copy;comic wiki 2026</small></footer>
+    <script type="module" src="src/js/addtag.js"></script>
 </body>
 
 </html>

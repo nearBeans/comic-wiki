@@ -43,8 +43,13 @@ ul {
     border-radius: 20px;
     display: inline;
     cursor: pointer;
+    margin-right: 10px;
     background-color: var(--color-tag-bg);
     color: var(--color-tag-txt);
+}
+
+.unactive {
+    background-color: var(--color-tag-u-bg) !important;
 }
 
 .current {
