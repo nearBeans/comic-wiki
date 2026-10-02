@@ -48,10 +48,6 @@ ul {
     color: var(--color-tag-txt);
 }
 
-.unactive {
-    background-color: var(--color-tag-u-bg) !important;
-}
-
 .current {
     display: flex;
 }
