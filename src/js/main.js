@@ -1,4 +1,5 @@
 import { works, authors } from "./data.js";
+import { createRating } from "./rating.js";
 // トップページのリセントカードの描画
 const container = document.querySelector("#cont-rcnt");
 const updateDateWorks = [...works];
@@ -76,20 +77,21 @@ function renderRanking(array, type) {
         foundAuthors.forEach(array => {
             authorNames.textContent += `${array.authorName}　`;
         });
-        const data = document.createElement("data");
+        const dataContainer = document.createElement("data");
         switch (type) {
             case "rating":
-                data.value = work.rating.toString();
-                data.textContent = work.rating.toString();
+                dataContainer.appendChild(createRating(work));
                 break;
             default:
+                const data = document.createElement('data');
                 data.value = work.viewCount.toString();
                 data.textContent = work.viewCount.toString() + "回";
+                dataContainer.appendChild(data);
                 break;
         }
         info.appendChild(title);
         info.appendChild(authorNames);
-        info.appendChild(data);
+        info.appendChild(dataContainer);
         linkCont.appendChild(image);
         linkCont.appendChild(info);
         listItem.appendChild(linkCont);
