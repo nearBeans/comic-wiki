@@ -1,12 +1,10 @@
-/*
 import { works } from "./data.js";
 
 const param = new URLSearchParams(window.location.search);
-const query = String(param.get('q') ?? '').trim();
+const selectedIds = param.getAll("tag").map(Number);
 const pageTitle = document.querySelector('title');
 if (pageTitle) pageTitle.textContent = `の検索結果 - Service Name`;
 
-const selectedIds = [...selected]; // 配列化
 const foundWorks = works.filter(item => selectedIds.every(id => item.hasTagIds.includes(id))); // 検索ロジック
 
 // 以下、描画ロジック
@@ -43,4 +41,3 @@ if (foundWorks.length === 0) {
     })
     resultsSection?.appendChild(cardContainer);
 }
-    */
