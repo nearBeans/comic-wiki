@@ -1,0 +1,43 @@
+.rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rating-stars {
+    position: relative;
+    display: inline-flex;
+    height: 24px;
+}
+
+.rating-stars-base,
+.rating-stars-filled {
+    display: flex;
+    gap: 4px;
+}
+
+.rating-stars-base {
+    color: #bbb;
+}
+
+.rating-stars-filled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    color: #f5b942;
+    white-space: nowrap;
+}
+
+.rating-star {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    background-color: currentColor;
+    -webkit-mask: url("../../assets/star.svg") center / contain no-repeat;
+    mask: url("../../assets/star.svg") center / contain no-repeat;
+}
+
+.rating-score {
+    font-variant-numeric: tabular-nums;
+}
