@@ -2,8 +2,9 @@ import { tags } from "./data.js";
 
 const tagList = document.getElementById('tag-list');
 const currentTags = document.getElementById('current-tags');
+const formContainer = document.getElementById('tagform');
 
-export const selected = new Set<number>();
+const selected = new Set<number>();
 
 function render() {
     tagList?.replaceChildren();
@@ -30,3 +31,4 @@ function render() {
 }
 
 render();
+

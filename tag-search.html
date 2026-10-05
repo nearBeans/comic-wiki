@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP PAGE</title>
+    <link rel="stylesheet" href="src/css/sanitize.css">
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/search.css">
+    <link rel="stylesheet" href="src/css/card.css">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+</head>
+
+<body>
+    <header>
+        <div class="top">
+            <h1><a href="index.html">Service Name</a></h1>
+            <div class="user">
+                <img src="https://placehold.jp/128x128.png" alt="Usericon">
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="search.html">作品を探す</a></li>
+                <li><a href="">作品を編集する</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="main">
+            <section class="tags-search">
+                <h2>タグから探す</h2>
+                <h3>現在選択中のタグ</h3>
+                <div class="current">
+                    <form id="tagform" action="tag-search.html" method="get">
+                        <button type="submit"><span class="material-symbols-outlined">search</span></button>
+                    </form>
+                    <ul class="tags" id="current-tags">
+
+                    </ul>
+                </div>
+                <h3>タグ一覧から選択</h3>
+                <ul class="tags" id="tag-list">
+                    
+                </ul>
+            </section>
+            <section class="results">
+            </section>
+        </section>
+    </main>
+    <footer><small>&copy;comic wiki 2026</small></footer>
+    <script type="module" src="src/js/addtag.js"></script>
+    <script type="module" src="src/js/tagsearch.js"></script>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 import { tags } from "./data.js";
 const tagList = document.getElementById('tag-list');
 const currentTags = document.getElementById('current-tags');
-const selected = new Set();
+export const selected = new Set();
 function render() {
     tagList?.replaceChildren();
     currentTags?.replaceChildren();
