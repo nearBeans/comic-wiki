@@ -2,7 +2,7 @@ import { tags } from "./data.js";
 
 const tagList = document.getElementById('tag-list');
 const currentTags = document.getElementById('current-tags');
-const formContainer = document.getElementById('tagform');
+const params = new URLSearchParams();
 
 const selected = new Set<number>();
 
@@ -32,3 +32,10 @@ function render() {
 
 render();
 
+const tagSearchBtn = document.getElementById('tagbtn');
+tagSearchBtn?.addEventListener('click', () => {
+    for (const tagId of selected) {
+        params.append("tag", String(tagId));
+    }
+    location.href = `tag-search.html?${params.toString()}`;
+})

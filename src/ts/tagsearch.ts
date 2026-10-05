@@ -1,3 +1,4 @@
+/*
 import { works } from "./data.js";
 
 const param = new URLSearchParams(window.location.search);
@@ -42,3 +43,4 @@ if (foundWorks.length === 0) {
     })
     resultsSection?.appendChild(cardContainer);
 }
+    */
