@@ -27,3 +27,4 @@ export function createRating(rating) {
     ratingContainer.append(stars, score);
     return ratingContainer;
 }
+//# sourceMappingURL=rating.js.map
