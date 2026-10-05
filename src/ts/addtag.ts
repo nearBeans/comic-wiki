@@ -1,9 +1,12 @@
 import { tags } from "./data.js";
 
+const param = new URLSearchParams(window.location.search);
+const selectedIds = param.getAll("tag").map(Number);
 const tagList = document.getElementById('tag-list');
 const currentTags = document.getElementById('current-tags');
 
 const selected = new Set<number>();
+selectedIds.forEach(id => {selected.add(id)});
 
 function render() {
     tagList?.replaceChildren();

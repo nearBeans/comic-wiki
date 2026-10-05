@@ -48,8 +48,11 @@ switch (work) {
         work.hasTagIds.forEach(tag => {
             const li = document.createElement('li');
             const matchTag = tags.find(q => q.id === tag);
+            const link = document.createElement('a');
+            link.href = `tag-search.html?tag=${matchTag?.id}`;
             if (matchTag)
-                li.textContent = matchTag.name;
+                link.textContent = matchTag.name;
+            li.appendChild(link);
             tagsContainer.appendChild(li);
         });
         const reviewScore = document.createElement('data');
