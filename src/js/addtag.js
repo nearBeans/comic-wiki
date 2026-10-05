@@ -1,7 +1,6 @@
 import { tags } from "./data.js";
 const tagList = document.getElementById('tag-list');
 const currentTags = document.getElementById('current-tags');
-const params = new URLSearchParams();
 const selected = new Set();
 function render() {
     tagList?.replaceChildren();
@@ -28,6 +27,7 @@ function render() {
 render();
 const tagSearchBtn = document.getElementById('tagbtn');
 tagSearchBtn?.addEventListener('click', () => {
+    const params = new URLSearchParams();
     for (const tagId of selected) {
         params.append("tag", String(tagId));
     }
