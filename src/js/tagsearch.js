@@ -1,9 +1,9 @@
-import { works } from "./data.js";
+import { tags, works } from "./data.js";
 const param = new URLSearchParams(window.location.search);
 const selectedIds = param.getAll("tag").map(Number);
 const pageTitle = document.querySelector('title');
 if (pageTitle)
-    pageTitle.textContent = `の検索結果 - Service Name`;
+    pageTitle.textContent = `検索結果 - Service Name`;
 const foundWorks = works.filter(item => selectedIds.every(id => item.hasTagIds.includes(id))); // 検索ロジック
 // 以下、描画ロジック
 const resultsSection = document.querySelector('.results');

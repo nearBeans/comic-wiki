@@ -2,12 +2,18 @@ ul {
     list-style: none;
 }
 
+.tags {
+    margin: 0;
+    padding: 0;
+}
+
 .tags li {
     padding: 4px 12px;
     border-radius: 20px;
-    display: inline;
+    display: inline-block;
     cursor: pointer;
-    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
     background-color: var(--color-tag-bg);
     color: var(--color-tag-txt);
 }
