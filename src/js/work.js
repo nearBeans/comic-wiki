@@ -1,5 +1,5 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
-import { workSections } from "./data.js";
+import { tags, workSections } from "./data.js";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
@@ -43,6 +43,15 @@ switch (work) {
                 authorLink.textContent = foundAuthorId.authorName;
             authorNames.appendChild(authorLink);
         }
+        const tagsContainer = document.createElement('ul');
+        tagsContainer.className = "tags";
+        work.hasTagIds.forEach(tag => {
+            const li = document.createElement('li');
+            const matchTag = tags.find(q => q.id === tag);
+            if (matchTag)
+                li.textContent = matchTag.name;
+            tagsContainer.appendChild(li);
+        });
         const reviewScore = document.createElement('data');
         reviewScore.value = work.rating.toString();
         reviewScore.textContent = work.rating.toString();
@@ -65,7 +74,7 @@ switch (work) {
         publishTable.append(headPublisher, publisher, headMagazines, magazines, headImprint, imprint);
         const descriptionMsg = document.createElement('p');
         descriptionMsg.textContent = work.description;
-        mangaInfo.append(mangaTitle, authorNames, reviewScore, viewCount, publishTable, descriptionMsg);
+        mangaInfo.append(mangaTitle, authorNames, tagsContainer, reviewScore, viewCount, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
         // #endregion
         // 下部包含セクションの作成

@@ -48,6 +48,10 @@ ul {
     content: ", ";
 }
 
+.tags {
+    transform: scale(0.9);
+}
+
 /* grid design */
 .episode {
     border: 2px solid black;
