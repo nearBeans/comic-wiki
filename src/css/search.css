@@ -34,20 +34,6 @@ section {
 }
 
 /* tag style */
-ul {
-    list-style: none;
-}
-
-.tags li {
-    padding: 4px 12px;
-    border-radius: 20px;
-    display: inline;
-    cursor: pointer;
-    margin-right: 10px;
-    background-color: var(--color-tag-bg);
-    color: var(--color-tag-txt);
-}
-
 .current {
     display: flex;
 }
