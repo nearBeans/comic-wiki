@@ -1,5 +1,6 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
 import { tags, workSections } from "./data.js";
+import { createRating } from "./rating.js";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
@@ -55,9 +56,7 @@ switch (work) {
             li.appendChild(link);
             tagsContainer.appendChild(li);
         });
-        const reviewScore = document.createElement('data');
-        reviewScore.value = work.rating.toString();
-        reviewScore.textContent = work.rating.toString();
+        const reviewScore = createRating(work.rating);
         const viewCount = document.createElement('data');
         viewCount.value = work.viewCount.toString();
         viewCount.textContent = `(${work.viewCount})`;
