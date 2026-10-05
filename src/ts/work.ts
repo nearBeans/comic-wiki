@@ -65,11 +65,7 @@ switch (work) {
             tagsContainer.appendChild(li);
         })
 
-        const reviewScore = createRating(work.rating);
-
-        const viewCount = document.createElement('data');
-        viewCount.value = work.viewCount.toString();
-        viewCount.textContent = `(${work.viewCount})`;
+        const reviewScore = createRating(work);
 
         const publishTable = document.createElement('dl');
 
@@ -93,7 +89,7 @@ switch (work) {
         const descriptionMsg = document.createElement('p');
         descriptionMsg.textContent = work.description;
 
-        mangaInfo.append(mangaTitle, authorNames, tagsContainer, reviewScore, viewCount, publishTable, descriptionMsg);
+        mangaInfo.append(mangaTitle, authorNames, tagsContainer, reviewScore, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
         // #endregion
 

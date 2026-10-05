@@ -56,10 +56,7 @@ switch (work) {
             li.appendChild(link);
             tagsContainer.appendChild(li);
         });
-        const reviewScore = createRating(work.rating);
-        const viewCount = document.createElement('data');
-        viewCount.value = work.viewCount.toString();
-        viewCount.textContent = `(${work.viewCount})`;
+        const reviewScore = createRating(work);
         const publishTable = document.createElement('dl');
         const headPublisher = document.createElement('dt');
         headPublisher.textContent = "出版社: ";
@@ -76,7 +73,7 @@ switch (work) {
         publishTable.append(headPublisher, publisher, headMagazines, magazines, headImprint, imprint);
         const descriptionMsg = document.createElement('p');
         descriptionMsg.textContent = work.description;
-        mangaInfo.append(mangaTitle, authorNames, tagsContainer, reviewScore, viewCount, publishTable, descriptionMsg);
+        mangaInfo.append(mangaTitle, authorNames, tagsContainer, reviewScore, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
         // #endregion
         // 下部包含セクションの作成

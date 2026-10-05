@@ -1,4 +1,9 @@
-export function createRating(rating: number): HTMLDivElement {
+import { type Work } from "./data.js";
+
+export function createRating(work: Work): HTMLDivElement {
+    const rating = work.rating;
+    const viewCount = work.viewCount;
+
     const normalizedRating = Math.min(5, Math.max(0, rating));
     const percentage = (normalizedRating / 5) * 100;
 
@@ -26,6 +31,10 @@ export function createRating(rating: number): HTMLDivElement {
     score.value = normalizedRating.toString();
     score.textContent = normalizedRating.toFixed(1);
 
-    ratingContainer.append(stars, score);
+    const viewData = document.createElement('data');
+    viewData.value = viewCount.toString();
+    viewData.textContent = `(${viewCount})`;
+
+    ratingContainer.append(stars, score, viewData);
     return ratingContainer;
 } 
