@@ -36,7 +36,7 @@ render();
 
 const tagSearchBtn = document.getElementById('tagbtn');
 tagSearchBtn?.addEventListener('click', () => {
-    if ([...selected].length === 0) {
+    if (selected.size === 0) {
         if(currentTags) currentTags.textContent = "最低一つは選択してください。";
     } else {
         const params = new URLSearchParams();
