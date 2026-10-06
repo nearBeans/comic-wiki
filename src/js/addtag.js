@@ -30,10 +30,16 @@ function render() {
 render();
 const tagSearchBtn = document.getElementById('tagbtn');
 tagSearchBtn?.addEventListener('click', () => {
-    const params = new URLSearchParams();
-    for (const tagId of selected) {
-        params.append("tag", String(tagId));
+    if ([...selected].length === 0) {
+        if (currentTags)
+            currentTags.textContent = "最低一つは選択してください。";
     }
-    location.href = `tag-search.html?${params.toString()}`;
+    else {
+        const params = new URLSearchParams();
+        for (const tagId of selected) {
+            params.append("tag", String(tagId));
+        }
+        location.href = `tag-search.html?${params.toString()}`;
+    }
 });
 //# sourceMappingURL=addtag.js.map

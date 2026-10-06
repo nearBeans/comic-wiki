@@ -6,7 +6,7 @@ const tagList = document.getElementById('tag-list');
 const currentTags = document.getElementById('current-tags');
 
 const selected = new Set<number>();
-selectedIds.forEach(id => {selected.add(id)});
+selectedIds.forEach(id => { selected.add(id) });
 
 function render() {
     tagList?.replaceChildren();
@@ -36,9 +36,13 @@ render();
 
 const tagSearchBtn = document.getElementById('tagbtn');
 tagSearchBtn?.addEventListener('click', () => {
-    const params = new URLSearchParams();
-    for (const tagId of selected) {
-        params.append("tag", String(tagId));
+    if ([...selected].length === 0) {
+        if(currentTags) currentTags.textContent = "最低一つは選択してください。";
+    } else {
+        const params = new URLSearchParams();
+        for (const tagId of selected) {
+            params.append("tag", String(tagId));
+        }
+        location.href = `tag-search.html?${params.toString()}`;
     }
-    location.href = `tag-search.html?${params.toString()}`;
 })
