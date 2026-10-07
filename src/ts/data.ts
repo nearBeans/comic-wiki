@@ -760,39 +760,3 @@ export const workSections: WorkSections[] = [
         ]
     }
 ];
-
-type ratingInterval = 
-    | 1
-    | 1.5
-    | 2
-    | 2.5
-    | 3
-    | 3.5
-    | 4
-    | 4.5
-    | 5;
-
-export type Review = {
-    id: number;
-    userId: number;
-    workId: number;
-    rating: ratingInterval;
-    text: string | null;
-}
-
-const reviews: Review[] = [
-    {
-        id: 1,
-        userId: 1,
-        workId: 1,
-        rating: 4.5,
-        text: "レビュー本文"
-    },
-    {
-        id: 2,
-        userId: 2,
-        workId: 4,
-        rating: 4,
-        text: null
-    }
-]
