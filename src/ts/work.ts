@@ -35,7 +35,6 @@ switch (work) {
             const oldHistory = JSON.parse(vanillaHist) as number[];
             const newHistory = oldHistory.filter(id => id !== work.id);
             newHistory.unshift(work.id);
-            localStorage.clear();
             localStorage.setItem('history', JSON.stringify(newHistory));
         } else {
             const newHistory: number[] = [work.id];
