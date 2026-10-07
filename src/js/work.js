@@ -24,6 +24,20 @@ switch (work) {
         break;
     }
     default: {
+        // #region localStorage saving
+        const vanillaHist = localStorage.getItem('history');
+        if (vanillaHist) {
+            const oldHistory = JSON.parse(vanillaHist);
+            const newHistory = oldHistory.filter(id => id !== work.id);
+            newHistory.unshift(work.id);
+            localStorage.clear();
+            localStorage.setItem('history', JSON.stringify(newHistory));
+        }
+        else {
+            const newHistory = [work.id];
+            localStorage.setItem('history', JSON.stringify(newHistory));
+        }
+        // #endregion
         // #region hero-section
         // ヒーローセクションの描画
         const heroSection = document.createElement('section');
