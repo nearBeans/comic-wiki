@@ -47,11 +47,13 @@ switch (work) {
         const mangaInfo = document.createElement('div');
         mangaInfo.className = "info";
         const mangaTitle = document.createElement('h2');
+        mangaTitle.setAttribute('contenteditable', 'true');
         mangaTitle.textContent = work.title;
         const authorNames = document.createElement('p');
         for (const authorId of work.authorId) {
             const authorLink = document.createElement('a');
             authorLink.href = `author.html?id=${authorId}`;
+            authorLink.setAttribute('contenteditable', 'true');
             const foundAuthorId = getAuthorById(authorId);
             if (foundAuthorId)
                 authorLink.textContent = foundAuthorId.authorName;
@@ -74,17 +76,21 @@ switch (work) {
         const headPublisher = document.createElement('dt');
         headPublisher.textContent = "出版社: ";
         const publisher = document.createElement('dd');
+        publisher.setAttribute('contenteditable', 'true');
         publisher.textContent = work.publisher;
         const headMagazines = document.createElement('dt');
         headMagazines.textContent = "掲載誌: ";
         const magazines = document.createElement('dd');
+        magazines.setAttribute('contenteditable', 'true');
         magazines.textContent = work.magazines.join(", ");
         const headImprint = document.createElement('dt');
         headImprint.textContent = "レーベル: ";
         const imprint = document.createElement('dd');
+        imprint.setAttribute('contenteditable', 'true');
         imprint.textContent = work.imprint;
         publishTable.append(headPublisher, publisher, headMagazines, magazines, headImprint, imprint);
         const descriptionMsg = document.createElement('p');
+        descriptionMsg.setAttribute('contenteditable', 'true');
         descriptionMsg.textContent = work.description;
         mangaInfo.append(mangaTitle, authorNames, tagsContainer, reviewScore, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
@@ -173,6 +179,18 @@ switch (work) {
                 chaptersContainer.appendChild(unpublishedChapterList);
                 volumeList.appendChild(chaptersContainer);
                 chapterSection.appendChild(volumeList);
+                // ボタンの描画
+                const storyAddingBtns = document.createElement('div');
+                storyAddingBtns.className = "adding-btn";
+                const storyAddingBtn = document.createElement('button');
+                storyAddingBtn.id = "adding-story";
+                storyAddingBtn.textContent = "話の追加";
+                const volumeAddingBtn = document.createElement('button');
+                volumeAddingBtn.id = "adding-volume";
+                volumeAddingBtn.textContent = "巻の追加";
+                storyAddingBtns.appendChild(storyAddingBtn);
+                storyAddingBtns.appendChild(volumeAddingBtn);
+                chapterSection.appendChild(storyAddingBtns);
                 break;
         }
         containSection.appendChild(chapterSection);
@@ -241,6 +259,13 @@ switch (work) {
                 }
                 detailsSection.appendChild(eachDetailSection);
             });
+            const detailBtnContainer = document.createElement('div');
+            detailBtnContainer.className = "detail-btns";
+            const detailBtn = document.createElement('button');
+            detailBtn.id = "adding-detail";
+            detailBtn.textContent = "追加";
+            detailBtnContainer.appendChild(detailBtn);
+            detailsSection.appendChild(detailBtnContainer);
             containSection.appendChild(detailsSection);
             // #endregion
             // mainに描画
@@ -252,4 +277,9 @@ switch (work) {
         }
     }
 }
-//# sourceMappingURL=work.js.map
+// #region button-click-event
+const btn = document.getElementById('adding-detail');
+btn?.addEventListener('click', () => {
+    console.log("テスト");
+});
+//# sourceMappingURL=editwork.js.map

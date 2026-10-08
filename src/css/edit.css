@@ -1,0 +1,21 @@
+.adding-btn {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px;
+    gap: 10px;
+}
+
+.adding-btn button {
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.detail-btns {
+    display: grid;
+    grid-template-rows: 50px;
+}
+
+.detail-btns button {
+    border: 1px solid black;
+    cursor: pointer;
+}

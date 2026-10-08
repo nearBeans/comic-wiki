@@ -1,62 +1,73 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
 import { tags, workSections } from "./data.js";
 import { createRating } from "./rating.js";
+
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
 const mainSection = document.querySelector('main');
 const pageTitle = document.querySelector('title');
+
 switch (work) {
     case undefined: {
         const httpErrorCont = document.createElement('div');
         httpErrorCont.className = "http404";
+
         const errorText = document.createElement('h2');
         errorText.textContent = "404 Not Found";
+
         const linkToTop = document.createElement('a');
         linkToTop.href = "index.html";
-        linkToTop.textContent = "←トップに戻る";
+        linkToTop.textContent = "←トップに戻る"
+
         httpErrorCont.appendChild(errorText);
         httpErrorCont.appendChild(linkToTop);
-        if (mainSection)
-            mainSection.appendChild(httpErrorCont);
-        if (pageTitle)
-            pageTitle.textContent = "404 Not Found";
+
+        if (mainSection) mainSection.appendChild(httpErrorCont);
+        if (pageTitle) pageTitle.textContent = "404 Not Found";
         break;
     }
+
     default: {
         // #region localStorage saving
         const vanillaHist = localStorage.getItem('history');
         if (vanillaHist) {
-            const oldHistory = JSON.parse(vanillaHist);
+            const oldHistory = JSON.parse(vanillaHist) as number[];
             const newHistory = oldHistory.filter(id => id !== work.id);
             newHistory.unshift(work.id);
             localStorage.setItem('history', JSON.stringify(newHistory));
-        }
-        else {
-            const newHistory = [work.id];
+        } else {
+            const newHistory: number[] = [work.id];
             localStorage.setItem('history', JSON.stringify(newHistory));
         }
         // #endregion
+
         // #region hero-section
         // ヒーローセクションの描画
         const heroSection = document.createElement('section');
         heroSection.className = "manga-hero";
+
         const heroImage = document.createElement('img');
         heroImage.src = work.clearImageUrl;
         heroImage.alt = `${work.title}の書影`;
+
         const mangaInfo = document.createElement('div');
         mangaInfo.className = "info";
+
         const mangaTitle = document.createElement('h2');
+        mangaTitle.setAttribute('contenteditable', 'true');
         mangaTitle.textContent = work.title;
+
         const authorNames = document.createElement('p');
         for (const authorId of work.authorId) {
             const authorLink = document.createElement('a');
             authorLink.href = `author.html?id=${authorId}`;
+            authorLink.setAttribute('contenteditable', 'true');
             const foundAuthorId = getAuthorById(authorId);
-            if (foundAuthorId)
-                authorLink.textContent = foundAuthorId.authorName;
+            if (foundAuthorId) authorLink.textContent = foundAuthorId.authorName;
             authorNames.appendChild(authorLink);
         }
+
         const tagsContainer = document.createElement('ul');
         tagsContainer.className = "tags";
         work.hasTagIds.forEach(tag => {
@@ -64,62 +75,81 @@ switch (work) {
             const matchTag = tags.find(q => q.id === tag);
             const link = document.createElement('a');
             link.href = `tag-search.html?tag=${matchTag?.id}`;
-            if (matchTag)
-                link.textContent = matchTag.name;
+            if (matchTag) link.textContent = matchTag.name;
             li.appendChild(link);
             tagsContainer.appendChild(li);
-        });
+        })
+
         const reviewScore = createRating(work);
+
         const publishTable = document.createElement('dl');
+
         const headPublisher = document.createElement('dt');
-        headPublisher.textContent = "出版社: ";
+        headPublisher.textContent = "出版社: "
         const publisher = document.createElement('dd');
+        publisher.setAttribute('contenteditable', 'true');
         publisher.textContent = work.publisher;
+
         const headMagazines = document.createElement('dt');
-        headMagazines.textContent = "掲載誌: ";
+        headMagazines.textContent = "掲載誌: "
         const magazines = document.createElement('dd');
+        magazines.setAttribute('contenteditable', 'true');
         magazines.textContent = work.magazines.join(", ");
+
         const headImprint = document.createElement('dt');
-        headImprint.textContent = "レーベル: ";
+        headImprint.textContent = "レーベル: "
         const imprint = document.createElement('dd');
+        imprint.setAttribute('contenteditable', 'true');
         imprint.textContent = work.imprint;
+
         publishTable.append(headPublisher, publisher, headMagazines, magazines, headImprint, imprint);
+
         const descriptionMsg = document.createElement('p');
+        descriptionMsg.setAttribute('contenteditable', 'true');
         descriptionMsg.textContent = work.description;
+
         mangaInfo.append(mangaTitle, authorNames, tagsContainer, reviewScore, publishTable, descriptionMsg);
         heroSection.append(heroImage, mangaInfo);
         // #endregion
+
         // 下部包含セクションの作成
         const containSection = document.createElement('section');
         containSection.className = "contain";
+
         // #region chapter-section
         // チャプターセクションの描画
         const chapterSection = document.createElement('section');
         chapterSection.className = "episode";
         const headingChapterSection = document.createElement('h3');
+
         const workChaptersAndVolumes = getChaptersByWorkId(workId);
         switch (workChaptersAndVolumes) {
             case undefined:
-                headingChapterSection.textContent = "紐付けられた作品がありません。";
+                headingChapterSection.textContent = "紐付けられた作品がありません。"
                 chapterSection.appendChild(headingChapterSection);
                 break;
+
             default:
                 headingChapterSection.textContent = "エピソード";
                 chapterSection.appendChild(headingChapterSection);
+
                 const volumeList = document.createElement('ul');
                 volumeList.className = "volume-list";
+
                 workChaptersAndVolumes.volumes.forEach(volume => {
-                    const volumeAndChaptersContainer = document.createElement('li');
+                    const volumeAndChaptersContainer = document.createElement('li')
                     // 巻の表示
                     const volumeContainer = document.createElement('div');
                     volumeContainer.className = "volume";
                     const volumeImage = document.createElement('img');
                     volumeImage.src = volume.volumeImageUrl;
                     volumeImage.alt = `${volume.volumeIndex} の書影`;
+
                     const volumeInfoContainer = document.createElement('div');
                     volumeInfoContainer.className = "volume-info";
                     const headVolumeIndex = document.createElement('h4');
                     headVolumeIndex.textContent = volume.volumeIndex;
+
                     const year = volume.publishedAt.getFullYear();
                     const month = volume.publishedAt.getMonth() + 1;
                     const date = volume.publishedAt.getDate();
@@ -131,20 +161,25 @@ switch (work) {
                         String(volume.publishedAt.getDate()).padStart(2, "0"),
                     ].join("-");
                     publishedDate.setAttribute('datetime', dateString);
+
                     volumeInfoContainer.appendChild(headVolumeIndex);
                     volumeInfoContainer.appendChild(publishedDate);
+
                     volumeContainer.appendChild(volumeImage);
                     volumeContainer.appendChild(volumeInfoContainer);
+
                     // 収録されている話を描画
                     const chapterList = document.createElement('ul');
                     volume.chapterIds.forEach(hasChapterId => {
                         const foundChapter = workChaptersAndVolumes.chapters.find(chapter => chapter.chapterId === hasChapterId);
                         if (foundChapter) {
                             const chapterListItem = document.createElement('li');
+
                             const chapterIndex = document.createElement('span');
                             chapterIndex.textContent = foundChapter.chapterIndex;
                             const chapterTitle = document.createElement('span');
                             chapterTitle.textContent = foundChapter.chapterTitle;
+
                             chapterListItem.appendChild(chapterIndex);
                             chapterListItem.appendChild(chapterTitle);
                             chapterList.appendChild(chapterListItem);
@@ -153,44 +188,68 @@ switch (work) {
                     volumeAndChaptersContainer.appendChild(volumeContainer);
                     volumeAndChaptersContainer.appendChild(chapterList);
                     volumeList.appendChild(volumeAndChaptersContainer);
-                });
-                const unpublishedChapters = workChaptersAndVolumes.chapters.filter(chapter => !workChaptersAndVolumes.volumes.some(volume => volume.chapterIds.includes(chapter.chapterId)));
-                const chaptersContainer = document.createElement('li');
+                })
+
+                const unpublishedChapters = workChaptersAndVolumes.chapters.filter(
+                    chapter => !workChaptersAndVolumes.volumes.some(volume => volume.chapterIds.includes(chapter.chapterId))
+                )
+                const chaptersContainer = document.createElement('li')
                 chaptersContainer.className = "leftovers";
                 const unpublishedChapterList = document.createElement('ul');
                 unpublishedChapters.forEach(chapter => {
                     if (chapter) {
                         const chapterListItem = document.createElement('li');
+
                         const chapterIndex = document.createElement('span');
                         chapterIndex.textContent = chapter.chapterIndex;
                         const chapterTitle = document.createElement('span');
                         chapterTitle.textContent = chapter.chapterTitle;
+
                         chapterListItem.appendChild(chapterIndex);
                         chapterListItem.appendChild(chapterTitle);
                         unpublishedChapterList.appendChild(chapterListItem);
                     }
-                });
+                })
                 chaptersContainer.appendChild(unpublishedChapterList);
                 volumeList.appendChild(chaptersContainer);
+
                 chapterSection.appendChild(volumeList);
+
+                // ボタンの描画
+                const storyAddingBtns = document.createElement('div');
+                storyAddingBtns.className = "adding-btn";
+                const storyAddingBtn = document.createElement('button');
+                storyAddingBtn.id = "adding-story";
+                storyAddingBtn.textContent = "話の追加";
+                const volumeAddingBtn = document.createElement('button');
+                volumeAddingBtn.id = "adding-volume";
+                volumeAddingBtn.textContent = "巻の追加";
+
+                storyAddingBtns.appendChild(storyAddingBtn);
+                storyAddingBtns.appendChild(volumeAddingBtn);
+
+                chapterSection.appendChild(storyAddingBtns);
+
                 break;
         }
         containSection.appendChild(chapterSection);
         // #endregion
+
         // #region details-section
         const detailsSection = document.createElement('section');
         detailsSection.className = "details";
+
         const foundDetailsWork = workSections.find(workItem => workItem.workId === workId);
         if (foundDetailsWork === undefined) {
             break;
-        }
-        else {
+        } else {
             foundDetailsWork.sections.forEach(detailSection => {
                 const eachDetailSection = document.createElement('section');
                 eachDetailSection.className = "detail";
                 const headingDetailSection = document.createElement('h3');
                 headingDetailSection.textContent = detailSection.headingName;
                 eachDetailSection.appendChild(headingDetailSection);
+
                 switch (detailSection.type) {
                     case "string": {
                         const detailText = document.createElement('p');
@@ -198,6 +257,7 @@ switch (work) {
                         eachDetailSection.appendChild(detailText);
                         break;
                     }
+
                     case "data": {
                         const dataContainer = document.createElement('dl');
                         detailSection.items.forEach(pair => {
@@ -205,12 +265,14 @@ switch (work) {
                             dataKey.textContent = pair.key;
                             const dataValue = document.createElement('dd');
                             dataValue.textContent = pair.value;
+
                             dataContainer.appendChild(dataKey);
                             dataContainer.appendChild(dataValue);
-                        });
+                        })
                         eachDetailSection.appendChild(dataContainer);
                         break;
                     }
+
                     case "table": {
                         const tableContainer = document.createElement('table');
                         // table header
@@ -220,8 +282,9 @@ switch (work) {
                             const tableHeadCell = document.createElement('th');
                             tableHeadCell.textContent = headItem;
                             tableHeadRow.appendChild(tableHeadCell);
-                        });
+                        })
                         tableHeadContainer.appendChild(tableHeadRow);
+
                         // table body
                         const tableBodyContainer = document.createElement('tbody');
                         detailSection.rows.forEach(row => {
@@ -230,26 +293,42 @@ switch (work) {
                                 const tableBodyCell = document.createElement('td');
                                 tableBodyCell.textContent = rowItem;
                                 tableBodyRow.appendChild(tableBodyCell);
-                            });
+                            })
                             tableBodyContainer.appendChild(tableBodyRow);
-                        });
+                        })
+
                         tableContainer.appendChild(tableHeadContainer);
                         tableContainer.appendChild(tableBodyContainer);
+
                         eachDetailSection.appendChild(tableContainer);
                         break;
                     }
                 }
                 detailsSection.appendChild(eachDetailSection);
-            });
+            })
+            const detailBtnContainer = document.createElement('div');
+            detailBtnContainer.className = "detail-btns";
+            const detailBtn = document.createElement('button');
+            detailBtn.id = "adding-detail";
+            detailBtn.textContent = "追加";
+            detailBtnContainer.appendChild(detailBtn);
+
+            detailsSection.appendChild(detailBtnContainer);
             containSection.appendChild(detailsSection);
             // #endregion
+
             // mainに描画
             mainSection?.appendChild(heroSection);
             mainSection?.appendChild(containSection);
-            if (pageTitle)
-                pageTitle.textContent = `${work.title} - Service Name`;
+
+            if (pageTitle) pageTitle.textContent = `${work.title} - Service Name`
             break;
         }
     }
 }
-//# sourceMappingURL=work.js.map
+
+// #region button-click-event
+const btn = document.getElementById('adding-detail');
+btn?.addEventListener('click', e => {
+    
+})
