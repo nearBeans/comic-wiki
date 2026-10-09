@@ -328,7 +328,15 @@ switch (work) {
 }
 
 // #region button-click-event
-const btn = document.getElementById('adding-detail');
-btn?.addEventListener('click', e => {
-    
-})
+const connectDialog = (buttonId: string, dialogId: string): void => {
+    const button = document.getElementById(buttonId);
+    const dialog = document.getElementById(dialogId);
+
+    if (button && dialog instanceof HTMLDialogElement) {
+        button.addEventListener('click', () => dialog.showModal());
+    }
+};
+
+connectDialog('adding-story', 'story-dialog');
+connectDialog('adding-volume', 'volume-dialog');
+connectDialog('adding-detail', 'detail-dialog');

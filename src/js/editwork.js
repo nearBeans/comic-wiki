@@ -278,8 +278,14 @@ switch (work) {
     }
 }
 // #region button-click-event
-const btn = document.getElementById('adding-detail');
-btn?.addEventListener('click', () => {
-    console.log("テスト");
-});
+const connectDialog = (buttonId, dialogId) => {
+    const button = document.getElementById(buttonId);
+    const dialog = document.getElementById(dialogId);
+    if (button && dialog instanceof HTMLDialogElement) {
+        button.addEventListener('click', () => dialog.showModal());
+    }
+};
+connectDialog('adding-story', 'story-dialog');
+connectDialog('adding-volume', 'volume-dialog');
+connectDialog('adding-detail', 'detail-dialog');
 //# sourceMappingURL=editwork.js.map

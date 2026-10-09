@@ -172,6 +172,60 @@
             </section>
         </section>
         -->
+        <dialog class="adding-dialog" id="story-dialog">
+            <form method="dialog">
+                <h4>話を追加する</h4>
+                <label for="sto-index">インデックス</label>
+                <input type="text" id="sto-index" placeholder="第10話">
+                <label for="story-title">話のタイトル</label>
+                <input type="text" id="story-title">
+                <div class="dialog-actions">
+                    <button type="submit" value="cancel">キャンセル</button>
+                    <button type="submit" value="add">追加</button>
+                </div>
+            </form>
+        </dialog>
+        <dialog class="adding-dialog" id="volume-dialog">
+            <form method="dialog">
+                <h4>巻を追加する</h4>
+                <label for="vol-index">インデックス</label>
+                <input type="text" id="vol-index" placeholder="2巻">
+                <label for="publish-date">出版日</label>
+                <input type="date" id="publish-date">
+                <div class="dialog-actions">
+                    <button type="submit" value="cancel">キャンセル</button>
+                    <button type="submit" value="add">追加</button>
+                </div>
+            </form>
+        </dialog>
+        <dialog class="adding-dialog" id="detail-dialog">
+            <form method="dialog">
+                <h4>詳細を追加する</h4>
+                <label for="detail-title">タイトル</label>
+                <input type="text" id="detail-title" placeholder="項目名">
+                <fieldset class="detail-type-options">
+                    <legend>形式</legend>
+                    <label class="detail-type-option" for="detail-type-data">
+                        <input type="radio" name="type" id="detail-type-data" value="data">
+                        <span>定義リスト</span>
+                    </label>
+                    <label class="detail-type-option" for="detail-type-table">
+                        <input type="radio" name="type" id="detail-type-table" value="table">
+                        <span>テーブル</span>
+                    </label>
+                    <label class="detail-type-option" for="detail-type-text">
+                        <input type="radio" name="type" id="detail-type-text" value="text">
+                        <span>テキスト</span>
+                    </label>
+                </fieldset>
+                <label for="detail-content">内容</label>
+                <textarea id="detail-content" rows="4"></textarea>
+                <div class="dialog-actions">
+                    <button type="submit" value="cancel">キャンセル</button>
+                    <button type="submit" value="add">追加</button>
+                </div>
+            </form>
+        </dialog>
     </main>
     <footer><small>&copy;comic wiki 2026</small></footer>
     <script type="module" src="src/js/editwork.js"></script>
