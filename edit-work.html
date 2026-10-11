@@ -218,8 +218,16 @@
                         <span>テキスト</span>
                     </label>
                 </fieldset>
-                <label for="detail-content">内容</label>
-                <textarea id="detail-content" rows="4"></textarea>
+                <!-- 定義リストのUI -->
+                <label for="detail-data-head">見出し語</label>
+                <input type="text" id="detail-data-head">
+                <label for="detail-data-content">定義</label>
+                <input type="text" id="detail-data-content">
+                <button>定義の追加</button>
+                <!-- テーブルのUI 思い浮かばなかった -->
+                <!-- テキストのUI -->
+                <label for="detail-text-content">テキスト</label>
+                <textarea id="detail-text-content"></textarea>
                 <div class="dialog-actions">
                     <button type="submit" value="cancel">キャンセル</button>
                     <button type="submit" value="add">追加</button>
