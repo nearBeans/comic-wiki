@@ -34,17 +34,22 @@ const isSection = (value) => {
 const saveSections = (workId, sections) => {
     localStorage.setItem(storageKey(workId), JSON.stringify(sections));
 };
+const getInitialSections = (workId) => (workSections.find(work => work.workId === workId)?.sections ?? []).map(cloneSection);
 export const getSections = (workId) => {
     const storedSections = localStorage.getItem(storageKey(workId));
-    if (storedSections === null) {
-        const initialSections = workSections.find(work => work.workId === workId)?.sections ?? [];
-        return initialSections.map(cloneSection);
+    if (storedSections === null)
+        return getInitialSections(workId);
+    try {
+        const parsed = JSON.parse(storedSections);
+        if (!Array.isArray(parsed) || !parsed.every(isSection)) {
+            throw new Error(`Invalid saved detail sections for work ${workId}.`);
+        }
+        return parsed.map(cloneSection);
     }
-    const parsed = JSON.parse(storedSections);
-    if (!Array.isArray(parsed) || !parsed.every(isSection)) {
-        throw new Error(`Invalid saved detail sections for work ${workId}.`);
+    catch (error) {
+        console.error(`Failed to load saved detail sections for work ${workId}; using initial data.`, error);
+        return getInitialSections(workId);
     }
-    return parsed.map(cloneSection);
 };
 export const addSection = (workId, section) => {
     const sections = getSections(workId);

@@ -42,18 +42,23 @@ const saveSections = (workId: number, sections: Section[]): void => {
     localStorage.setItem(storageKey(workId), JSON.stringify(sections));
 };
 
+const getInitialSections = (workId: number): Section[] =>
+    (workSections.find(work => work.workId === workId)?.sections ?? []).map(cloneSection);
+
 export const getSections = (workId: number): Section[] => {
     const storedSections = localStorage.getItem(storageKey(workId));
-    if (storedSections === null) {
-        const initialSections = workSections.find(work => work.workId === workId)?.sections ?? [];
-        return initialSections.map(cloneSection);
-    }
+    if (storedSections === null) return getInitialSections(workId);
 
-    const parsed: unknown = JSON.parse(storedSections);
-    if (!Array.isArray(parsed) || !parsed.every(isSection)) {
-        throw new Error(`Invalid saved detail sections for work ${workId}.`);
+    try {
+        const parsed: unknown = JSON.parse(storedSections);
+        if (!Array.isArray(parsed) || !parsed.every(isSection)) {
+            throw new Error(`Invalid saved detail sections for work ${workId}.`);
+        }
+        return parsed.map(cloneSection);
+    } catch (error) {
+        console.error(`Failed to load saved detail sections for work ${workId}; using initial data.`, error);
+        return getInitialSections(workId);
     }
-    return parsed.map(cloneSection);
 };
 
 export const addSection = (workId: number, section: Section): void => {
