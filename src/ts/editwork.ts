@@ -1,6 +1,9 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
-import { tags, workSections } from "./data.js";
+import { tags, workSections, type Section } from "./data.js";
 import { createRating } from "./rating.js";
+import { createDataEditor } from "./dataEditor.js";
+import { createTableEditor } from "./tableEditor.js";
+import { createTextEditor } from "./textEditor.js";
 
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
@@ -340,3 +343,97 @@ const connectDialog = (buttonId: string, dialogId: string): void => {
 connectDialog('adding-story', 'story-dialog');
 connectDialog('adding-volume', 'volume-dialog');
 connectDialog('adding-detail', 'detail-dialog');
+
+const volumeChapterList = document.getElementById('volume-chapter-list');
+const volumeChapterData = getChaptersByWorkId(workId);
+
+if (volumeChapterList && volumeChapterData) {
+    volumeChapterData.chapters.forEach(chapter => {
+        const label = document.createElement('label');
+        label.className = 'volume-chapter-option';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'volume-chapter';
+        checkbox.value = String(chapter.chapterId);
+
+        const text = document.createElement('span');
+        text.textContent = `${chapter.chapterIndex} ${chapter.chapterTitle}`;
+
+        label.append(checkbox, text);
+        volumeChapterList.appendChild(label);
+    });
+}
+
+// #region table-editor
+// #region detail-editors
+const detailDialog = document.getElementById('detail-dialog');
+const detailTitle = document.getElementById('detail-title') as HTMLInputElement | null;
+const dataHost = document.getElementById('detail-data-editor');
+const tableHost = document.getElementById('detail-table-editor');
+const textWrapper = document.getElementById('detail-text-editor');
+const textArea = document.getElementById('detail-text-content') as HTMLTextAreaElement | null;
+
+if (
+    detailDialog instanceof HTMLDialogElement &&
+    detailTitle && dataHost && tableHost && textWrapper && textArea
+) {
+    const form = detailDialog.querySelector('form');
+    const dataEditor = createDataEditor(dataHost);
+    const tableEditor = createTableEditor(tableHost);
+    const textEditor = createTextEditor(textArea);
+
+    const selectedType = () =>
+        detailDialog.querySelector<HTMLInputElement>('input[name="type"]:checked')?.value;
+
+    // 選ばれた形式のエディタだけ表示
+    const showEditorFor = (type: string | undefined) => {
+        dataHost.hidden = type !== 'data';
+        tableHost.hidden = type !== 'table';
+        textWrapper.hidden = type !== 'text';
+    };
+
+    // 形式とタイトルから、追加するセクションを作る（作れなければnull）
+    const buildSection = (type: string | undefined, heading: string): Section | null => {
+        if (!heading) return null;
+        switch (type) {
+            case 'data': return dataEditor.toSection(heading);
+            case 'table': return tableEditor.toSection(heading);
+            case 'text': return textEditor.toSection(heading);
+            default: return null;
+        }
+    };
+
+    detailDialog.querySelectorAll<HTMLInputElement>('input[name="type"]').forEach(radio => {
+        radio.addEventListener('change', () => showEditorFor(selectedType()));
+    });
+
+    // タイトル欄でEnterを押してもダイアログが閉じないように
+    detailTitle.addEventListener('keydown', event => {
+        if (event.key === 'Enter') event.preventDefault();
+    });
+
+    // 「追加」を押したときに中身が不十分なら送信を止める
+    form?.addEventListener('submit', event => {
+        const submitter = event.submitter as HTMLButtonElement | null;
+        if (submitter?.value !== 'add') return;
+        if (!buildSection(selectedType(), detailTitle.value.trim())) {
+            event.preventDefault();
+            alert('タイトルと内容を入力してください。');
+        }
+    });
+
+    // 閉じたら（追加でもキャンセルでも）入力を初期化
+    detailDialog.addEventListener('close', () => {
+        if (detailDialog.returnValue === 'add') {
+            const section = buildSection(selectedType(), detailTitle.value.trim());
+            if (section) workSections.find(w => w.workId === workId)?.sections.push(section);
+        }
+        form?.reset();
+        dataEditor.reset();
+        tableEditor.reset();
+        textEditor.reset();
+        showEditorFor(undefined);
+    });
+}
+// #endregion

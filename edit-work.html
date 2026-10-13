@@ -192,6 +192,10 @@
                 <input type="text" id="vol-index" placeholder="2巻">
                 <label for="publish-date">出版日</label>
                 <input type="date" id="publish-date">
+                <fieldset class="volume-chapter-options">
+                    <legend>収録話</legend>
+                    <div id="volume-chapter-list"></div>
+                </fieldset>
                 <div class="dialog-actions">
                     <button type="submit" value="cancel">キャンセル</button>
                     <button type="submit" value="add">追加</button>
@@ -218,16 +222,14 @@
                         <span>テキスト</span>
                     </label>
                 </fieldset>
-                <!-- 定義リストのUI -->
-                <label for="detail-data-head">見出し語</label>
-                <input type="text" id="detail-data-head">
-                <label for="detail-data-content">定義</label>
-                <input type="text" id="detail-data-content">
-                <button>定義の追加</button>
-                <!-- テーブルのUI 思い浮かばなかった -->
-                <!-- テキストのUI -->
-                <label for="detail-text-content">テキスト</label>
-                <textarea id="detail-text-content"></textarea>
+
+                <div id="detail-data-editor" hidden></div>
+                <div id="detail-table-editor" hidden></div>
+                <div id="detail-text-editor" hidden>
+                    <label for="detail-text-content">テキスト</label>
+                    <textarea id="detail-text-content"></textarea>
+                </div>
+
                 <div class="dialog-actions">
                     <button type="submit" value="cancel">キャンセル</button>
                     <button type="submit" value="add">追加</button>

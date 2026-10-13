@@ -82,6 +82,34 @@
     accent-color: #333;
 }
 
+.volume-chapter-options {
+    display: grid;
+    gap: 8px;
+    max-height: 220px;
+    margin: 0;
+    padding: 12px;
+    overflow-y: auto;
+    border: 1px solid #aaa;
+}
+
+.volume-chapter-options legend {
+    padding: 0 4px;
+}
+
+.volume-chapter-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.volume-chapter-option input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    accent-color: #333;
+}
+
 .dialog-actions {
     display: flex;
     justify-content: flex-end;
@@ -92,4 +120,131 @@
 .dialog-actions button {
     padding: 6px 12px;
     cursor: pointer;
+}
+
+/* ---- 詳細ダイアログ（既存の .adding-dialog に追加する分） ---- */
+#detail-dialog {
+    width: min(640px, calc(100% - 32px));
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+}
+
+/* 形式ごとのエディタの表示切り替え（hidden属性を確実に効かせる） */
+#detail-data-editor[hidden],
+#detail-table-editor[hidden],
+#detail-text-editor[hidden] {
+    display: none;
+}
+
+/* ---- テキスト ---- */
+#detail-text-editor {
+    display: grid;
+    gap: 12px;
+}
+
+#detail-text-editor label {
+    font-weight: bold;
+}
+
+#detail-text-editor textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+/* ---- 定義リスト ---- */
+#detail-data-editor {
+    display: grid;
+    gap: 6px;
+}
+
+.data-editor-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto;
+    gap: 6px;
+}
+
+/* ---- テーブル ---- */
+#detail-table-editor {
+    overflow-x: auto; /* 列が多いときは横スクロール */
+}
+
+#detail-table-editor table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#detail-table-editor th,
+#detail-table-editor td {
+    border: 1px solid #ccc;
+    padding: 4px;
+    text-align: left;
+    vertical-align: top;
+}
+
+#detail-table-editor th {
+    background: #f5f5f5;
+}
+
+/* 既存の .adding-dialog input の width: 100% を、表の中では上書き */
+#detail-table-editor input {
+    width: 100%;
+    min-width: 7em;
+    padding: 4px 6px;
+}
+
+#detail-table-editor th input {
+    width: calc(100% - 28px); /* 右の × ボタンの分を空ける */
+}
+
+.table-editor-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+/* ---- 追加・削除などの小さなボタン ---- */
+#detail-data-editor button,
+#detail-table-editor button {
+    padding: 4px 10px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    font: inherit;
+}
+
+#detail-data-editor button:hover,
+#detail-table-editor button:hover {
+    background: #f0f0f0;
+}
+
+#detail-data-editor button:disabled,
+#detail-table-editor button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* 行・列の × ボタンは小さく */
+.data-editor-row > button,
+#detail-table-editor th > button,
+#detail-table-editor td > button {
+    width: 24px;
+    padding: 0;
+}
+
+/* ---- 「追加」ボタンを目立たせる ---- */
+.dialog-actions button[value="add"] {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+@media (max-width: 480px) {
+    .data-editor-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+*[contenteditable] {
+    cursor: text;
 }
