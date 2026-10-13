@@ -20,12 +20,71 @@
     cursor: pointer;
 }
 
-.detail[draggable="true"] {
-    cursor: move;
+.detail-reorder-hint {
+    margin: 0 0 16px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.detail-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-heading h3 {
+    flex: 1;
+}
+
+.detail-drag-handle {
+    flex: none;
+    padding: 2px 8px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    background: #fff;
+    color: #444;
+    cursor: grab;
+    font: inherit;
+    touch-action: none;
+}
+
+.detail-drag-handle:active {
+    cursor: grabbing;
+}
+
+.detail-dragging {
+    opacity: 0.4;
+}
+
+.detail-drop-before,
+.detail-drop-after {
+    position: relative;
+    background: #f1f7ff;
+}
+
+.detail-drop-before::before,
+.detail-drop-after::after {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 4px;
+    border-radius: 4px;
+    background: #1769d2;
+    content: "";
+    pointer-events: none;
+}
+
+.detail-drop-before::before {
+    top: -12px;
+}
+
+.detail-drop-after::after {
+    bottom: -12px;
 }
 
 .detail-remove {
-    float: right;
+    flex: none;
     border: 1px solid #999;
     border-radius: 4px;
     background: #fff;

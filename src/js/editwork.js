@@ -5,6 +5,7 @@ import { createDataEditor } from "./dataEditor.js";
 import { createTableEditor } from "./tableEditor.js";
 import { createTextEditor } from "./textEditor.js";
 import { addSection, getSections, moveSection, removeSection } from "./detailStore.js";
+const detailDragDataType = "application/x-work-section-index";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
@@ -217,18 +218,54 @@ switch (work) {
             getSections(workId).forEach((detailSection, index) => {
                 const eachDetailSection = document.createElement('section');
                 eachDetailSection.className = "detail";
-                eachDetailSection.draggable = true;
-                eachDetailSection.addEventListener('dragstart', event => {
-                    event.dataTransfer?.setData('text/plain', String(index));
+                const headingRow = document.createElement('div');
+                headingRow.className = "detail-heading";
+                const dragHandle = document.createElement('button');
+                dragHandle.type = "button";
+                dragHandle.className = "detail-drag-handle";
+                dragHandle.draggable = true;
+                dragHandle.textContent = "☰";
+                dragHandle.setAttribute('aria-label', `${detailSection.headingName}をドラッグして並べ替え`);
+                dragHandle.title = "ドラッグして並べ替え";
+                dragHandle.addEventListener('dragstart', event => {
+                    event.dataTransfer?.setData(detailDragDataType, String(index));
                     if (event.dataTransfer)
                         event.dataTransfer.effectAllowed = "move";
+                    eachDetailSection.classList.add("detail-dragging");
                 });
-                eachDetailSection.addEventListener('dragover', event => event.preventDefault());
-                eachDetailSection.addEventListener('drop', event => {
+                dragHandle.addEventListener('dragend', () => {
+                    detailList.querySelectorAll('.detail-dragging, .detail-drop-before, .detail-drop-after')
+                        .forEach(element => element.classList.remove("detail-dragging", "detail-drop-before", "detail-drop-after"));
+                });
+                eachDetailSection.addEventListener('dragover', event => {
+                    if (!event.dataTransfer?.types.includes(detailDragDataType))
+                        return;
                     event.preventDefault();
-                    const fromIndex = Number(event.dataTransfer?.getData('text/plain'));
-                    if (Number.isInteger(fromIndex)) {
-                        moveSection(workId, fromIndex, index);
+                    if (event.dataTransfer)
+                        event.dataTransfer.dropEffect = "move";
+                    const bounds = eachDetailSection.getBoundingClientRect();
+                    const dropAfter = event.clientY >= bounds.top + bounds.height / 2;
+                    eachDetailSection.classList.toggle("detail-drop-before", !dropAfter);
+                    eachDetailSection.classList.toggle("detail-drop-after", dropAfter);
+                });
+                eachDetailSection.addEventListener('dragleave', event => {
+                    if (event.relatedTarget instanceof Node && eachDetailSection.contains(event.relatedTarget))
+                        return;
+                    eachDetailSection.classList.remove("detail-drop-before", "detail-drop-after");
+                });
+                eachDetailSection.addEventListener('drop', event => {
+                    const draggedIndex = event.dataTransfer?.getData(detailDragDataType) ?? "";
+                    if (!/^\d+$/.test(draggedIndex))
+                        return;
+                    event.preventDefault();
+                    const fromIndex = Number(draggedIndex);
+                    if (Number.isInteger(fromIndex) && fromIndex >= 0 && fromIndex < getSections(workId).length) {
+                        const bounds = eachDetailSection.getBoundingClientRect();
+                        const dropAfter = event.clientY >= bounds.top + bounds.height / 2;
+                        const insertionIndex = index + (dropAfter ? 1 : 0);
+                        const toIndex = fromIndex < insertionIndex ? insertionIndex - 1 : insertionIndex;
+                        if (fromIndex !== toIndex)
+                            moveSection(workId, fromIndex, toIndex);
                         renderDetailsForWork();
                     }
                 });
@@ -243,7 +280,8 @@ switch (work) {
                     removeSection(workId, index);
                     renderDetailsForWork();
                 });
-                eachDetailSection.append(headingDetailSection, deleteButton);
+                headingRow.append(dragHandle, headingDetailSection, deleteButton);
+                eachDetailSection.appendChild(headingRow);
                 switch (detailSection.type) {
                     case "string": {
                         const detailText = document.createElement('p');
