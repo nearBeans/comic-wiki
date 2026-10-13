@@ -1,14 +1,16 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
-import { tags, workSections } from "./data.js";
+import { tags } from "./data.js";
 import { createRating } from "./rating.js";
 import { createDataEditor } from "./dataEditor.js";
 import { createTableEditor } from "./tableEditor.js";
 import { createTextEditor } from "./textEditor.js";
+import { addSection, getSections, moveSection, removeSection } from "./detailStore.js";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
 const mainSection = document.querySelector('main');
 const pageTitle = document.querySelector('title');
+let renderDetails = () => { };
 switch (work) {
     case undefined: {
         const httpErrorCont = document.createElement('div');
@@ -201,17 +203,47 @@ switch (work) {
         // #region details-section
         const detailsSection = document.createElement('section');
         detailsSection.className = "details";
-        const foundDetailsWork = workSections.find(workItem => workItem.workId === workId);
-        if (foundDetailsWork === undefined) {
-            break;
-        }
-        else {
-            foundDetailsWork.sections.forEach(detailSection => {
+        const detailList = document.createElement('div');
+        detailList.className = "detail-list";
+        const detailBtnContainer = document.createElement('div');
+        detailBtnContainer.className = "detail-btns";
+        const detailBtn = document.createElement('button');
+        detailBtn.id = "adding-detail";
+        detailBtn.textContent = "追加";
+        detailBtnContainer.appendChild(detailBtn);
+        detailsSection.append(detailList, detailBtnContainer);
+        const renderDetailsForWork = () => {
+            detailList.replaceChildren();
+            getSections(workId).forEach((detailSection, index) => {
                 const eachDetailSection = document.createElement('section');
                 eachDetailSection.className = "detail";
+                eachDetailSection.draggable = true;
+                eachDetailSection.addEventListener('dragstart', event => {
+                    event.dataTransfer?.setData('text/plain', String(index));
+                    if (event.dataTransfer)
+                        event.dataTransfer.effectAllowed = "move";
+                });
+                eachDetailSection.addEventListener('dragover', event => event.preventDefault());
+                eachDetailSection.addEventListener('drop', event => {
+                    event.preventDefault();
+                    const fromIndex = Number(event.dataTransfer?.getData('text/plain'));
+                    if (Number.isInteger(fromIndex)) {
+                        moveSection(workId, fromIndex, index);
+                        renderDetailsForWork();
+                    }
+                });
                 const headingDetailSection = document.createElement('h3');
                 headingDetailSection.textContent = detailSection.headingName;
-                eachDetailSection.appendChild(headingDetailSection);
+                const deleteButton = document.createElement('button');
+                deleteButton.type = "button";
+                deleteButton.className = "detail-remove";
+                deleteButton.textContent = "×";
+                deleteButton.setAttribute('aria-label', `${detailSection.headingName}を削除`);
+                deleteButton.addEventListener('click', () => {
+                    removeSection(workId, index);
+                    renderDetailsForWork();
+                });
+                eachDetailSection.append(headingDetailSection, deleteButton);
                 switch (detailSection.type) {
                     case "string": {
                         const detailText = document.createElement('p');
@@ -226,15 +258,13 @@ switch (work) {
                             dataKey.textContent = pair.key;
                             const dataValue = document.createElement('dd');
                             dataValue.textContent = pair.value;
-                            dataContainer.appendChild(dataKey);
-                            dataContainer.appendChild(dataValue);
+                            dataContainer.append(dataKey, dataValue);
                         });
                         eachDetailSection.appendChild(dataContainer);
                         break;
                     }
                     case "table": {
                         const tableContainer = document.createElement('table');
-                        // table header
                         const tableHeadContainer = document.createElement('thead');
                         const tableHeadRow = document.createElement('tr');
                         detailSection.headers.forEach(headItem => {
@@ -243,7 +273,6 @@ switch (work) {
                             tableHeadRow.appendChild(tableHeadCell);
                         });
                         tableHeadContainer.appendChild(tableHeadRow);
-                        // table body
                         const tableBodyContainer = document.createElement('tbody');
                         detailSection.rows.forEach(row => {
                             const tableBodyRow = document.createElement('tr');
@@ -254,30 +283,24 @@ switch (work) {
                             });
                             tableBodyContainer.appendChild(tableBodyRow);
                         });
-                        tableContainer.appendChild(tableHeadContainer);
-                        tableContainer.appendChild(tableBodyContainer);
+                        tableContainer.append(tableHeadContainer, tableBodyContainer);
                         eachDetailSection.appendChild(tableContainer);
                         break;
                     }
                 }
-                detailsSection.appendChild(eachDetailSection);
+                detailList.appendChild(eachDetailSection);
             });
-            const detailBtnContainer = document.createElement('div');
-            detailBtnContainer.className = "detail-btns";
-            const detailBtn = document.createElement('button');
-            detailBtn.id = "adding-detail";
-            detailBtn.textContent = "追加";
-            detailBtnContainer.appendChild(detailBtn);
-            detailsSection.appendChild(detailBtnContainer);
-            containSection.appendChild(detailsSection);
-            // #endregion
-            // mainに描画
-            mainSection?.appendChild(heroSection);
-            mainSection?.appendChild(containSection);
-            if (pageTitle)
-                pageTitle.textContent = `${work.title} - Service Name`;
-            break;
-        }
+        };
+        renderDetails = renderDetailsForWork;
+        renderDetailsForWork();
+        containSection.appendChild(detailsSection);
+        // #endregion
+        // mainに描画
+        mainSection?.appendChild(heroSection);
+        mainSection?.appendChild(containSection);
+        if (pageTitle)
+            pageTitle.textContent = `${work.title} - Service Name`;
+        break;
     }
 }
 // #region button-click-event
@@ -307,7 +330,6 @@ if (volumeChapterList && volumeChapterData) {
         volumeChapterList.appendChild(label);
     });
 }
-// #region table-editor
 // #region detail-editors
 const detailDialog = document.getElementById('detail-dialog');
 const detailTitle = document.getElementById('detail-title');
@@ -361,8 +383,10 @@ if (detailDialog instanceof HTMLDialogElement &&
     detailDialog.addEventListener('close', () => {
         if (detailDialog.returnValue === 'add') {
             const section = buildSection(selectedType(), detailTitle.value.trim());
-            if (section)
-                workSections.find(w => w.workId === workId)?.sections.push(section);
+            if (section) {
+                addSection(workId, section);
+                renderDetails();
+            }
         }
         form?.reset();
         dataEditor.reset();

@@ -1,6 +1,7 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
-import { tags, workSections } from "./data.js";
+import { tags } from "./data.js";
 import { createRating } from "./rating.js";
+import { getSections } from "./detailStore.js";
 
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
@@ -217,11 +218,7 @@ switch (work) {
         const detailsSection = document.createElement('section');
         detailsSection.className = "details";
 
-        const foundDetailsWork = workSections.find(workItem => workItem.workId === workId);
-        if (foundDetailsWork === undefined) {
-            break;
-        } else {
-            foundDetailsWork.sections.forEach(detailSection => {
+        getSections(workId).forEach(detailSection => {
                 const eachDetailSection = document.createElement('section');
                 eachDetailSection.className = "detail";
                 const headingDetailSection = document.createElement('h3');
@@ -283,16 +280,15 @@ switch (work) {
                     }
                 }
                 detailsSection.appendChild(eachDetailSection);
-            })
-            containSection.appendChild(detailsSection);
-            // #endregion
+        });
+        containSection.appendChild(detailsSection);
+        // #endregion
 
-            // mainに描画
-            mainSection?.appendChild(heroSection);
-            mainSection?.appendChild(containSection);
+        // mainに描画
+        mainSection?.appendChild(heroSection);
+        mainSection?.appendChild(containSection);
 
-            if (pageTitle) pageTitle.textContent = `${work.title} - Service Name`
-            break;
-        }
+        if (pageTitle) pageTitle.textContent = `${work.title} - Service Name`
+        break;
     }
 }

@@ -20,6 +20,23 @@
     cursor: pointer;
 }
 
+.detail[draggable="true"] {
+    cursor: move;
+}
+
+.detail-remove {
+    float: right;
+    border: 1px solid #999;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    font: inherit;
+}
+
+.detail-remove:hover {
+    background: #f0f0f0;
+}
+
 .adding-dialog {
     width: min(420px, calc(100% - 32px));
     margin: auto;

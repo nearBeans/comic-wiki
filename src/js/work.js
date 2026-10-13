@@ -1,6 +1,7 @@
 import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
-import { tags, workSections } from "./data.js";
+import { tags } from "./data.js";
 import { createRating } from "./rating.js";
+import { getSections } from "./detailStore.js";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
@@ -180,76 +181,70 @@ switch (work) {
         // #region details-section
         const detailsSection = document.createElement('section');
         detailsSection.className = "details";
-        const foundDetailsWork = workSections.find(workItem => workItem.workId === workId);
-        if (foundDetailsWork === undefined) {
-            break;
-        }
-        else {
-            foundDetailsWork.sections.forEach(detailSection => {
-                const eachDetailSection = document.createElement('section');
-                eachDetailSection.className = "detail";
-                const headingDetailSection = document.createElement('h3');
-                headingDetailSection.textContent = detailSection.headingName;
-                eachDetailSection.appendChild(headingDetailSection);
-                switch (detailSection.type) {
-                    case "string": {
-                        const detailText = document.createElement('p');
-                        detailText.textContent = detailSection.mainText;
-                        eachDetailSection.appendChild(detailText);
-                        break;
-                    }
-                    case "data": {
-                        const dataContainer = document.createElement('dl');
-                        detailSection.items.forEach(pair => {
-                            const dataKey = document.createElement('dt');
-                            dataKey.textContent = pair.key;
-                            const dataValue = document.createElement('dd');
-                            dataValue.textContent = pair.value;
-                            dataContainer.appendChild(dataKey);
-                            dataContainer.appendChild(dataValue);
-                        });
-                        eachDetailSection.appendChild(dataContainer);
-                        break;
-                    }
-                    case "table": {
-                        const tableContainer = document.createElement('table');
-                        // table header
-                        const tableHeadContainer = document.createElement('thead');
-                        const tableHeadRow = document.createElement('tr');
-                        detailSection.headers.forEach(headItem => {
-                            const tableHeadCell = document.createElement('th');
-                            tableHeadCell.textContent = headItem;
-                            tableHeadRow.appendChild(tableHeadCell);
-                        });
-                        tableHeadContainer.appendChild(tableHeadRow);
-                        // table body
-                        const tableBodyContainer = document.createElement('tbody');
-                        detailSection.rows.forEach(row => {
-                            const tableBodyRow = document.createElement('tr');
-                            row.forEach(rowItem => {
-                                const tableBodyCell = document.createElement('td');
-                                tableBodyCell.textContent = rowItem;
-                                tableBodyRow.appendChild(tableBodyCell);
-                            });
-                            tableBodyContainer.appendChild(tableBodyRow);
-                        });
-                        tableContainer.appendChild(tableHeadContainer);
-                        tableContainer.appendChild(tableBodyContainer);
-                        eachDetailSection.appendChild(tableContainer);
-                        break;
-                    }
+        getSections(workId).forEach(detailSection => {
+            const eachDetailSection = document.createElement('section');
+            eachDetailSection.className = "detail";
+            const headingDetailSection = document.createElement('h3');
+            headingDetailSection.textContent = detailSection.headingName;
+            eachDetailSection.appendChild(headingDetailSection);
+            switch (detailSection.type) {
+                case "string": {
+                    const detailText = document.createElement('p');
+                    detailText.textContent = detailSection.mainText;
+                    eachDetailSection.appendChild(detailText);
+                    break;
                 }
-                detailsSection.appendChild(eachDetailSection);
-            });
-            containSection.appendChild(detailsSection);
-            // #endregion
-            // mainに描画
-            mainSection?.appendChild(heroSection);
-            mainSection?.appendChild(containSection);
-            if (pageTitle)
-                pageTitle.textContent = `${work.title} - Service Name`;
-            break;
-        }
+                case "data": {
+                    const dataContainer = document.createElement('dl');
+                    detailSection.items.forEach(pair => {
+                        const dataKey = document.createElement('dt');
+                        dataKey.textContent = pair.key;
+                        const dataValue = document.createElement('dd');
+                        dataValue.textContent = pair.value;
+                        dataContainer.appendChild(dataKey);
+                        dataContainer.appendChild(dataValue);
+                    });
+                    eachDetailSection.appendChild(dataContainer);
+                    break;
+                }
+                case "table": {
+                    const tableContainer = document.createElement('table');
+                    // table header
+                    const tableHeadContainer = document.createElement('thead');
+                    const tableHeadRow = document.createElement('tr');
+                    detailSection.headers.forEach(headItem => {
+                        const tableHeadCell = document.createElement('th');
+                        tableHeadCell.textContent = headItem;
+                        tableHeadRow.appendChild(tableHeadCell);
+                    });
+                    tableHeadContainer.appendChild(tableHeadRow);
+                    // table body
+                    const tableBodyContainer = document.createElement('tbody');
+                    detailSection.rows.forEach(row => {
+                        const tableBodyRow = document.createElement('tr');
+                        row.forEach(rowItem => {
+                            const tableBodyCell = document.createElement('td');
+                            tableBodyCell.textContent = rowItem;
+                            tableBodyRow.appendChild(tableBodyCell);
+                        });
+                        tableBodyContainer.appendChild(tableBodyRow);
+                    });
+                    tableContainer.appendChild(tableHeadContainer);
+                    tableContainer.appendChild(tableBodyContainer);
+                    eachDetailSection.appendChild(tableContainer);
+                    break;
+                }
+            }
+            detailsSection.appendChild(eachDetailSection);
+        });
+        containSection.appendChild(detailsSection);
+        // #endregion
+        // mainに描画
+        mainSection?.appendChild(heroSection);
+        mainSection?.appendChild(containSection);
+        if (pageTitle)
+            pageTitle.textContent = `${work.title} - Service Name`;
+        break;
     }
 }
 //# sourceMappingURL=work.js.map
