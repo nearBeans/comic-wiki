@@ -1,7 +1,8 @@
-import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
+import { getWorkById, getAuthorById } from "./get.js";
 import { tags } from "./data.js";
 import { createRating } from "./rating.js";
 import { getSections } from "./detailStore.js";
+import { getEpisodes } from "./episodeStore.js";
 
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
@@ -117,7 +118,7 @@ switch (work) {
         chapterSection.className = "episode";
         const headingChapterSection = document.createElement('h3');
 
-        const workChaptersAndVolumes = getChaptersByWorkId(workId);
+        const workChaptersAndVolumes = getEpisodes(workId);
         switch (workChaptersAndVolumes) {
             case undefined:
                 headingChapterSection.textContent = "紐付けられた作品がありません。"

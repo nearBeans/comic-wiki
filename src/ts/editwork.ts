@@ -1,12 +1,14 @@
-import { getWorkById, getAuthorById, getChaptersByWorkId } from "./get.js";
+import { getWorkById, getAuthorById } from "./get.js";
 import { tags, type Section } from "./data.js";
 import { createRating } from "./rating.js";
 import { createDataEditor } from "./dataEditor.js";
 import { createTableEditor } from "./tableEditor.js";
 import { createTextEditor } from "./textEditor.js";
 import { addSection, getSections, moveSection, removeSection } from "./detailStore.js";
+import { getEpisodes, moveEpisode, removeEpisode } from "./episodeStore.js";
 
 const detailDragDataType = "application/x-work-section-index";
+const episodeDragDataType = "application/x-episode-id";
 const param = new URLSearchParams(window.location.search);
 const workId = Number(param.get('id'));
 const work = getWorkById(workId);
@@ -128,7 +130,7 @@ switch (work) {
         chapterSection.className = "episode";
         const headingChapterSection = document.createElement('h3');
 
-        const workChaptersAndVolumes = getChaptersByWorkId(workId);
+        const workChaptersAndVolumes = getEpisodes(workId);
         switch (workChaptersAndVolumes) {
             case undefined:
                 headingChapterSection.textContent = "紐付けられた作品がありません。"
@@ -142,83 +144,118 @@ switch (work) {
                 const volumeList = document.createElement('ul');
                 volumeList.className = "volume-list";
 
-                workChaptersAndVolumes.volumes.forEach(volume => {
-                    const volumeAndChaptersContainer = document.createElement('li')
-                    // 巻の表示
-                    const volumeContainer = document.createElement('div');
-                    volumeContainer.className = "volume";
-                    const volumeImage = document.createElement('img');
-                    volumeImage.src = volume.volumeImageUrl;
-                    volumeImage.alt = `${volume.volumeIndex} の書影`;
+                const renderEpisodes = () => {
+                    const currentEpisodes = getEpisodes(workId);
+                    if (!currentEpisodes) return;
+                    volumeList.replaceChildren();
 
-                    const volumeInfoContainer = document.createElement('div');
-                    volumeInfoContainer.className = "volume-info";
-                    const headVolumeIndex = document.createElement('h4');
-                    headVolumeIndex.textContent = volume.volumeIndex;
+                    const createEpisodeList = (chapterIds: number[], volumeId: number | null): HTMLUListElement => {
+                        const list = document.createElement('ul');
+                        chapterIds.forEach(chapterId => {
+                            const episode = currentEpisodes.chapters.find(chapter => chapter.chapterId === chapterId);
+                            if (!episode) return;
 
-                    const year = volume.publishedAt.getFullYear();
-                    const month = volume.publishedAt.getMonth() + 1;
-                    const date = volume.publishedAt.getDate();
-                    const publishedDate = document.createElement('time');
-                    publishedDate.textContent = `${year}年${month}月${date}日`;
-                    const dateString = [
-                        volume.publishedAt.getFullYear(),
-                        String(volume.publishedAt.getMonth() + 1).padStart(2, "0"),
-                        String(volume.publishedAt.getDate()).padStart(2, "0"),
-                    ].join("-");
-                    publishedDate.setAttribute('datetime', dateString);
+                            const item = document.createElement('li');
+                            item.className = "episode-item";
+                            const handle = document.createElement('button');
+                            handle.type = "button";
+                            handle.className = "episode-drag-handle";
+                            handle.draggable = true;
+                            handle.textContent = "☰";
+                            handle.title = "ドラッグして並べ替え";
+                            handle.setAttribute('aria-label', `${episode.chapterIndex}をドラッグして並べ替え`);
+                            handle.addEventListener('dragstart', event => {
+                                event.dataTransfer?.setData(episodeDragDataType, String(chapterId));
+                                if (event.dataTransfer) event.dataTransfer.effectAllowed = "move";
+                                item.classList.add("episode-dragging");
+                            });
+                            handle.addEventListener('dragend', () => {
+                                volumeList.querySelectorAll('.episode-dragging, .episode-drop-before, .episode-drop-after')
+                                    .forEach(element => element.classList.remove("episode-dragging", "episode-drop-before", "episode-drop-after"));
+                            });
+                            item.addEventListener('dragover', event => {
+                                if (!event.dataTransfer?.types.includes(episodeDragDataType)) return;
+                                event.preventDefault();
+                                if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+                                const bounds = item.getBoundingClientRect();
+                                const dropAfter = event.clientY >= bounds.top + bounds.height / 2;
+                                item.classList.toggle("episode-drop-before", !dropAfter);
+                                item.classList.toggle("episode-drop-after", dropAfter);
+                            });
+                            item.addEventListener('dragleave', event => {
+                                if (event.relatedTarget instanceof Node && item.contains(event.relatedTarget)) return;
+                                item.classList.remove("episode-drop-before", "episode-drop-after");
+                            });
+                            item.addEventListener('drop', event => {
+                                const draggedId = event.dataTransfer?.getData(episodeDragDataType) ?? "";
+                                if (!/^\d+$/.test(draggedId)) return;
+                                const draggedChapterId = Number(draggedId);
+                                const sourceEpisodes = getEpisodes(workId);
+                                const sourceVolumeId = sourceEpisodes?.volumes
+                                    .find(volume => volume.chapterIds.includes(draggedChapterId))?.volumeId ?? null;
+                                if (sourceVolumeId !== volumeId) return;
+                                event.preventDefault();
+                                const bounds = item.getBoundingClientRect();
+                                const insertAfter = event.clientY >= bounds.top + bounds.height / 2;
+                                moveEpisode(workId, draggedChapterId, chapterId, volumeId, insertAfter);
+                                renderEpisodes();
+                            });
 
-                    volumeInfoContainer.appendChild(headVolumeIndex);
-                    volumeInfoContainer.appendChild(publishedDate);
+                            const indexText = document.createElement('span');
+                            indexText.textContent = episode.chapterIndex;
+                            const titleText = document.createElement('span');
+                            titleText.textContent = episode.chapterTitle;
+                            const removeButton = document.createElement('button');
+                            removeButton.type = "button";
+                            removeButton.className = "episode-remove";
+                            removeButton.textContent = "×";
+                            removeButton.setAttribute('aria-label', `${episode.chapterIndex}を削除`);
+                            removeButton.addEventListener('click', () => {
+                                if (confirm(`${episode.chapterIndex}を削除しますか？`)) {
+                                    removeEpisode(workId, chapterId);
+                                    renderEpisodes();
+                                }
+                            });
+                            item.append(handle, indexText, titleText, removeButton);
+                            list.appendChild(item);
+                        });
+                        return list;
+                    };
 
-                    volumeContainer.appendChild(volumeImage);
-                    volumeContainer.appendChild(volumeInfoContainer);
-
-                    // 収録されている話を描画
-                    const chapterList = document.createElement('ul');
-                    volume.chapterIds.forEach(hasChapterId => {
-                        const foundChapter = workChaptersAndVolumes.chapters.find(chapter => chapter.chapterId === hasChapterId);
-                        if (foundChapter) {
-                            const chapterListItem = document.createElement('li');
-
-                            const chapterIndex = document.createElement('span');
-                            chapterIndex.textContent = foundChapter.chapterIndex;
-                            const chapterTitle = document.createElement('span');
-                            chapterTitle.textContent = foundChapter.chapterTitle;
-
-                            chapterListItem.appendChild(chapterIndex);
-                            chapterListItem.appendChild(chapterTitle);
-                            chapterList.appendChild(chapterListItem);
-                        }
+                    currentEpisodes.volumes.forEach(volume => {
+                        const volumeItem = document.createElement('li');
+                        const volumeContainer = document.createElement('div');
+                        volumeContainer.className = "volume";
+                        const volumeImage = document.createElement('img');
+                        volumeImage.src = volume.volumeImageUrl;
+                        volumeImage.alt = `${volume.volumeIndex} の書影`;
+                        const volumeInfoContainer = document.createElement('div');
+                        volumeInfoContainer.className = "volume-info";
+                        const volumeHeading = document.createElement('h4');
+                        volumeHeading.textContent = volume.volumeIndex;
+                        const publishedDate = document.createElement('time');
+                        publishedDate.textContent = `${volume.publishedAt.getFullYear()}年${volume.publishedAt.getMonth() + 1}月${volume.publishedAt.getDate()}日`;
+                        publishedDate.dateTime = [
+                            volume.publishedAt.getFullYear(),
+                            String(volume.publishedAt.getMonth() + 1).padStart(2, "0"),
+                            String(volume.publishedAt.getDate()).padStart(2, "0"),
+                        ].join("-");
+                        volumeInfoContainer.append(volumeHeading, publishedDate);
+                        volumeContainer.append(volumeImage, volumeInfoContainer);
+                        volumeItem.append(volumeContainer, createEpisodeList(volume.chapterIds, volume.volumeId));
+                        volumeList.appendChild(volumeItem);
                     });
-                    volumeAndChaptersContainer.appendChild(volumeContainer);
-                    volumeAndChaptersContainer.appendChild(chapterList);
-                    volumeList.appendChild(volumeAndChaptersContainer);
-                })
 
-                const unpublishedChapters = workChaptersAndVolumes.chapters.filter(
-                    chapter => !workChaptersAndVolumes.volumes.some(volume => volume.chapterIds.includes(chapter.chapterId))
-                )
-                const chaptersContainer = document.createElement('li')
-                chaptersContainer.className = "leftovers";
-                const unpublishedChapterList = document.createElement('ul');
-                unpublishedChapters.forEach(chapter => {
-                    if (chapter) {
-                        const chapterListItem = document.createElement('li');
-
-                        const chapterIndex = document.createElement('span');
-                        chapterIndex.textContent = chapter.chapterIndex;
-                        const chapterTitle = document.createElement('span');
-                        chapterTitle.textContent = chapter.chapterTitle;
-
-                        chapterListItem.appendChild(chapterIndex);
-                        chapterListItem.appendChild(chapterTitle);
-                        unpublishedChapterList.appendChild(chapterListItem);
-                    }
-                })
-                chaptersContainer.appendChild(unpublishedChapterList);
-                volumeList.appendChild(chaptersContainer);
-
+                    const collectedIds = new Set(currentEpisodes.volumes.flatMap(volume => volume.chapterIds));
+                    const uncollectedIds = currentEpisodes.chapters
+                        .filter(chapter => !collectedIds.has(chapter.chapterId))
+                        .map(chapter => chapter.chapterId);
+                    const leftovers = document.createElement('li');
+                    leftovers.className = "leftovers";
+                    leftovers.appendChild(createEpisodeList(uncollectedIds, null));
+                    volumeList.appendChild(leftovers);
+                };
+                renderEpisodes();
                 chapterSection.appendChild(volumeList);
 
                 // ボタンの描画
@@ -397,7 +434,7 @@ connectDialog('adding-volume', 'volume-dialog');
 connectDialog('adding-detail', 'detail-dialog');
 
 const volumeChapterList = document.getElementById('volume-chapter-list');
-const volumeChapterData = getChaptersByWorkId(workId);
+const volumeChapterData = getEpisodes(workId);
 
 if (volumeChapterList && volumeChapterData) {
     volumeChapterData.chapters.forEach(chapter => {
